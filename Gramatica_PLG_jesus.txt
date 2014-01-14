@@ -1,0 +1,101 @@
+==============================
+SINTACTICOOOOOOO
+==============================
+
+SPROG := PROG fin
+PROG := DECS ACCS
+
+DECS := DEC RDECS | lambda
+RDECS := sep RRDECS
+RRDECS := DECS
+
+DEC := id TIPO
+
+ACCS := ACC
+RACS := sep RRACCS
+RRACCS := ACCS | Lambda
+
+ACC := IN 
+ACC := OUT 
+ACC := ACCASIGN
+
+IN := opin id
+OUT := opout ACCCOMP
+
+ACCASIGN := ID opas VALUE
+VALUE := ACCASIGN | ACCCOMP
+
+ACCCOMP := ACCADIT RACCOMP
+RACCCOMP := menq ACCADIT 
+RACCCOMP := mayq ACCADIT 
+RACCCOMP := menoig ACCADIT 
+RACCCOMP := mayoig ACCADIT 
+RACCCOMP := igual ACCADIT 
+RACCCOMP := dist ACCADIT 
+RACCCOMP := Lambda
+
+ACCADIT := ACCMULT RACCADIT
+RACCADIT := add ACCADIT
+RACCADIT := sub ACCADIT
+RACCADIT := or ACCADIT
+RACCADIT := Lambda
+
+ACCMULT := ACCUN RACCMULT
+RACCMULT :=  mult ACCMULT
+RACCMULT :=  div ACCMULT
+RACCMULT :=  mod ACCMULT
+RACCMULT :=  and ACCMULT
+RACCMULT := Lambda
+
+ACCUN := inv FACTOR
+ACCUN := not FACTOR
+ACCUN := paren_a
+RACCUN := real RRACCUN
+RACCUN := int RRACCUN
+RACCUN := paren_c FACTOR
+RACCUN := ACCASIN paren_c
+
+FACTOR := id
+FACTOR := NUM 
+
+NUM := real | int
+
+TIPO := tiporeal | tipoint
+
+
+fin := '$'
+
+opas := '='
+
+opin := "in"
+opout := "out"
+
+menq := '<'
+mayq := '>'
+menoig := "<="
+mayoig := ">="
+igual := "=="
+dist := "!="
+
+add := '+'
+sub := '-'
+or := "||"
+
+mult := '*'
+div := '/'
+mod := '%'
+and := "&&"
+
+inv := '-'
+not := '!'
+
+id := ('_' + LETRA)(LETRA + DIGITO)*
+tiporeal := ['R','r']['E','e']['A','a']['L','l']
+tipoint := ['I','i']['N','n']['T','t']
+
+comment := '@'([A-Z][a-z][0-9])*'\n'
+
+real := ('-')?[0-9](.[0-9]+)?
+int := ('-')?[0-9]+
+
+sep := ';'

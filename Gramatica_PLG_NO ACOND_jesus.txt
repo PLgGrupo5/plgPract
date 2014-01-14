@@ -1,0 +1,81 @@
+==============================
+SINTACTICOOOOOOO
+==============================
+
+SPROG := PROG FIN
+PROG := DECS ACCS
+
+DECS := DEC;DECS | 
+DEC := ID TIPO
+
+ACCS := ACC ; RACCS
+RACCS := ACCS | Lambda
+
+
+ACC := IN 
+ACC := OUT 
+ACC := ACCASIGN
+
+IN := OPIN ID
+OUT := OPOUT EXP | OPOUT ID
+
+ACCASIGN := ID OPAS VALUE
+VALUE := ACCASIGN | ACCCOMP
+
+ACCCOMP := ACCADIT OPC ACCADIT | ACCADIT
+OPC :=  MENQ | MAYQ | MENOIG | MAYOIG | IGUAL | DIST
+
+ACCADIT := ACCADIT OPA ACCMULT | ACCMULT
+OPA := ADD | SUB | OR
+
+ACCMULT := ACCMULT OPM ACCUN | ACCUN
+OPM := MULT | DIV | MOD | AND
+
+ACCUN := OPU FACTOR | FACTOR
+OPU := INV | NOT | CINT | CREAL
+
+FACTOR := ID | NUM | ( ACCASGIN )
+
+NUM := REAL | INT
+
+TIPO := TIPOREAL | TIPOINT
+
+=================================
+LEXICOOOOOOOOO
+=================================
+FIN := '$'
+
+OPAS := '='
+
+OPIN := "in"
+OPOUT := "out"
+
+MENQ := '<'
+MAYQ := '>'
+MENOIG := "<="
+MAYOIG := ">="
+IGUAL := "=="
+DIST := "!="
+
+ADD := '+'
+SUB := '-'
+OR := "||"
+
+MULT := '*'
+DIV := '/'
+MOD := '%'
+AND := "&&"
+
+INV := '-'
+NOT := '!'
+CINT := "(int)"
+CREAL := "(real)"
+
+ID := ('_' + LETRA)(LETRA + DIGITO)*
+TIPOREAL := ['R','r']['E','e']['A','a']['L','l']
+TIPOINT := ['I','i']['N','n']['T','t']
+
+COMENT := '@'([A-Z][a-z][0-9])*'\n'
+
+REAL := ('-')?[0-9](.[0-9]+)?
+INT := ('-')?[0-9]+
