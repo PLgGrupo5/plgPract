@@ -1,0 +1,6 @@
+int pepe;
+int juan;
+
+pepe = juan;
+jose = pepe == juan;
+$$
