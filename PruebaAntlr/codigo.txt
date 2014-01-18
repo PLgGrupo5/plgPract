@@ -4,4 +4,5 @@ int juan;
 pepe = juan;
 jose = ( pepe == juan ) + 3 && 5.5;
 out ( in jose );
+pepe = (juan != jose);
 $$

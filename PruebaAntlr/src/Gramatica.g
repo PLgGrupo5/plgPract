@@ -20,6 +20,8 @@ OP_COMP;
 OP_IN;
 OP_OUT;
 FIN ;
+ASIG_IGUAL;
+INT_O_REAL;
 }
 
 
@@ -55,7 +57,8 @@ rout: acc
 	  | DELIM_PAREN_A rout DELIM_PAREN_C
 	  ;
 
-accasign : ID raccasign;
+accasign : ident:ID raccasign
+;
 raccasign: OP_AS value;
 value    : raccasign | acccomp;
 
@@ -115,6 +118,9 @@ protected OP_OUT : ('O'|'o')('U'|'u')('T'|'t');
 protected ID : (LETRA | '_') (((LETRA) | ENTERO | '_' ))*  ( '?')? ;
 protected OP_AS : '=';
 protected OP_IGUAL: "==";
+protected OP_NOT : '!';
+protected OP_COMP : "!="|'>'|'<'|">="|"<=";
+
 
 ID_TIPO_OPIN_OPOUT:   (OP_IN ('T'|'t') ' ')=> TIPOENT {$setType(TIPOENT);}
 				| (OP_IN ('T'|'t') ~' ') => ID {$setType(ID);} 
@@ -152,12 +158,12 @@ OP_OR : "||";
 
 OP_AND : "&&";
 
-OP_NOT : '!';
-
-OP_COMP : "!="|'>'|'<'|">="|"<=";
-
 ASIG_IGUAL: (OP_AS '=')=> OP_IGUAL {$setType(OP_IGUAL);}
 			| (OP_AS) => OP_AS {$setType(OP_AS);}
 			; 
+			
+NOT_COMP: (OP_NOT ('='))=> OP_COMP {$setType(OP_COMP);}
+		  | OP_NOT
+		  ;
 
 FIN : "$$";

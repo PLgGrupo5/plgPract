@@ -402,14 +402,17 @@ public MiParser(ParserSharedInputState state) {
 		returnAST = null;
 		ASTPair currentAST = new ASTPair();
 		AST accasign_AST = null;
+		Token  ident = null;
+		AST ident_AST = null;
 		
 		try {      // for error handling
-			AST tmp10_AST = null;
-			tmp10_AST = astFactory.create(LT(1));
-			astFactory.addASTChild(currentAST, tmp10_AST);
+			ident = LT(1);
+			ident_AST = astFactory.create(ident);
+			astFactory.addASTChild(currentAST, ident_AST);
 			match(ID);
 			raccasign();
 			astFactory.addASTChild(currentAST, returnAST);
+			System.out.println(ident.getLine()) ;
 			accasign_AST = (AST)currentAST.root;
 		}
 		catch (RecognitionException ex) {
@@ -438,15 +441,15 @@ public MiParser(ParserSharedInputState state) {
 			}
 			case DELIM_PAREN_A:
 			{
-				AST tmp11_AST = null;
-				tmp11_AST = astFactory.create(LT(1));
-				astFactory.addASTChild(currentAST, tmp11_AST);
+				AST tmp10_AST = null;
+				tmp10_AST = astFactory.create(LT(1));
+				astFactory.addASTChild(currentAST, tmp10_AST);
 				match(DELIM_PAREN_A);
 				rout();
 				astFactory.addASTChild(currentAST, returnAST);
-				AST tmp12_AST = null;
-				tmp12_AST = astFactory.create(LT(1));
-				astFactory.addASTChild(currentAST, tmp12_AST);
+				AST tmp11_AST = null;
+				tmp11_AST = astFactory.create(LT(1));
+				astFactory.addASTChild(currentAST, tmp11_AST);
 				match(DELIM_PAREN_C);
 				rout_AST = (AST)currentAST.root;
 				break;
@@ -471,9 +474,9 @@ public MiParser(ParserSharedInputState state) {
 		AST raccasign_AST = null;
 		
 		try {      // for error handling
-			AST tmp13_AST = null;
-			tmp13_AST = astFactory.create(LT(1));
-			astFactory.addASTChild(currentAST, tmp13_AST);
+			AST tmp12_AST = null;
+			tmp12_AST = astFactory.create(LT(1));
+			astFactory.addASTChild(currentAST, tmp12_AST);
 			match(OP_AS);
 			value();
 			astFactory.addASTChild(currentAST, returnAST);
@@ -576,9 +579,9 @@ public MiParser(ParserSharedInputState state) {
 			switch ( LA(1)) {
 			case OP_COMP:
 			{
-				AST tmp14_AST = null;
-				tmp14_AST = astFactory.create(LT(1));
-				astFactory.addASTChild(currentAST, tmp14_AST);
+				AST tmp13_AST = null;
+				tmp13_AST = astFactory.create(LT(1));
+				astFactory.addASTChild(currentAST, tmp13_AST);
 				match(OP_COMP);
 				accadit();
 				astFactory.addASTChild(currentAST, returnAST);
@@ -587,9 +590,9 @@ public MiParser(ParserSharedInputState state) {
 			}
 			case OP_IGUAL:
 			{
-				AST tmp15_AST = null;
-				tmp15_AST = astFactory.create(LT(1));
-				astFactory.addASTChild(currentAST, tmp15_AST);
+				AST tmp14_AST = null;
+				tmp14_AST = astFactory.create(LT(1));
+				astFactory.addASTChild(currentAST, tmp14_AST);
 				match(OP_IGUAL);
 				accadit();
 				astFactory.addASTChild(currentAST, returnAST);
@@ -645,9 +648,9 @@ public MiParser(ParserSharedInputState state) {
 			switch ( LA(1)) {
 			case OP_MAS:
 			{
-				AST tmp16_AST = null;
-				tmp16_AST = astFactory.create(LT(1));
-				astFactory.addASTChild(currentAST, tmp16_AST);
+				AST tmp15_AST = null;
+				tmp15_AST = astFactory.create(LT(1));
+				astFactory.addASTChild(currentAST, tmp15_AST);
 				match(OP_MAS);
 				accmult();
 				astFactory.addASTChild(currentAST, returnAST);
@@ -658,9 +661,9 @@ public MiParser(ParserSharedInputState state) {
 			}
 			case OP_MENOS:
 			{
-				AST tmp17_AST = null;
-				tmp17_AST = astFactory.create(LT(1));
-				astFactory.addASTChild(currentAST, tmp17_AST);
+				AST tmp16_AST = null;
+				tmp16_AST = astFactory.create(LT(1));
+				astFactory.addASTChild(currentAST, tmp16_AST);
 				match(OP_MENOS);
 				accmult();
 				astFactory.addASTChild(currentAST, returnAST);
@@ -671,9 +674,9 @@ public MiParser(ParserSharedInputState state) {
 			}
 			case OP_OR:
 			{
-				AST tmp18_AST = null;
-				tmp18_AST = astFactory.create(LT(1));
-				astFactory.addASTChild(currentAST, tmp18_AST);
+				AST tmp17_AST = null;
+				tmp17_AST = astFactory.create(LT(1));
+				astFactory.addASTChild(currentAST, tmp17_AST);
 				match(OP_OR);
 				accmult();
 				astFactory.addASTChild(currentAST, returnAST);
@@ -722,9 +725,9 @@ public MiParser(ParserSharedInputState state) {
 			}
 			case OP_MENOS:
 			{
-				AST tmp19_AST = null;
-				tmp19_AST = astFactory.create(LT(1));
-				astFactory.addASTChild(currentAST, tmp19_AST);
+				AST tmp18_AST = null;
+				tmp18_AST = astFactory.create(LT(1));
+				astFactory.addASTChild(currentAST, tmp18_AST);
 				match(OP_MENOS);
 				accun();
 				astFactory.addASTChild(currentAST, returnAST);
@@ -733,9 +736,9 @@ public MiParser(ParserSharedInputState state) {
 			}
 			case OP_NOT:
 			{
-				AST tmp20_AST = null;
-				tmp20_AST = astFactory.create(LT(1));
-				astFactory.addASTChild(currentAST, tmp20_AST);
+				AST tmp19_AST = null;
+				tmp19_AST = astFactory.create(LT(1));
+				astFactory.addASTChild(currentAST, tmp19_AST);
 				match(OP_NOT);
 				accun();
 				astFactory.addASTChild(currentAST, returnAST);
@@ -744,9 +747,9 @@ public MiParser(ParserSharedInputState state) {
 			}
 			case DELIM_PAREN_A:
 			{
-				AST tmp21_AST = null;
-				tmp21_AST = astFactory.create(LT(1));
-				astFactory.addASTChild(currentAST, tmp21_AST);
+				AST tmp20_AST = null;
+				tmp20_AST = astFactory.create(LT(1));
+				astFactory.addASTChild(currentAST, tmp20_AST);
 				match(DELIM_PAREN_A);
 				raccun();
 				astFactory.addASTChild(currentAST, returnAST);
@@ -776,9 +779,9 @@ public MiParser(ParserSharedInputState state) {
 			switch ( LA(1)) {
 			case OP_MUL_DIV:
 			{
-				AST tmp22_AST = null;
-				tmp22_AST = astFactory.create(LT(1));
-				astFactory.addASTChild(currentAST, tmp22_AST);
+				AST tmp21_AST = null;
+				tmp21_AST = astFactory.create(LT(1));
+				astFactory.addASTChild(currentAST, tmp21_AST);
 				match(OP_MUL_DIV);
 				accun();
 				astFactory.addASTChild(currentAST, returnAST);
@@ -789,9 +792,9 @@ public MiParser(ParserSharedInputState state) {
 			}
 			case OP_AND:
 			{
-				AST tmp23_AST = null;
-				tmp23_AST = astFactory.create(LT(1));
-				astFactory.addASTChild(currentAST, tmp23_AST);
+				AST tmp22_AST = null;
+				tmp22_AST = astFactory.create(LT(1));
+				astFactory.addASTChild(currentAST, tmp22_AST);
 				match(OP_AND);
 				accun();
 				astFactory.addASTChild(currentAST, returnAST);
@@ -802,9 +805,9 @@ public MiParser(ParserSharedInputState state) {
 			}
 			case OP_MOD:
 			{
-				AST tmp24_AST = null;
-				tmp24_AST = astFactory.create(LT(1));
-				astFactory.addASTChild(currentAST, tmp24_AST);
+				AST tmp23_AST = null;
+				tmp23_AST = astFactory.create(LT(1));
+				astFactory.addASTChild(currentAST, tmp23_AST);
 				match(OP_MOD);
 				accun();
 				astFactory.addASTChild(currentAST, returnAST);
@@ -847,9 +850,9 @@ public MiParser(ParserSharedInputState state) {
 			switch ( LA(1)) {
 			case ID:
 			{
-				AST tmp25_AST = null;
-				tmp25_AST = astFactory.create(LT(1));
-				astFactory.addASTChild(currentAST, tmp25_AST);
+				AST tmp24_AST = null;
+				tmp24_AST = astFactory.create(LT(1));
+				astFactory.addASTChild(currentAST, tmp24_AST);
 				match(ID);
 				factor_AST = (AST)currentAST.root;
 				break;
@@ -885,13 +888,13 @@ public MiParser(ParserSharedInputState state) {
 			switch ( LA(1)) {
 			case TIPO:
 			{
+				AST tmp25_AST = null;
+				tmp25_AST = astFactory.create(LT(1));
+				astFactory.addASTChild(currentAST, tmp25_AST);
+				match(TIPO);
 				AST tmp26_AST = null;
 				tmp26_AST = astFactory.create(LT(1));
 				astFactory.addASTChild(currentAST, tmp26_AST);
-				match(TIPO);
-				AST tmp27_AST = null;
-				tmp27_AST = astFactory.create(LT(1));
-				astFactory.addASTChild(currentAST, tmp27_AST);
 				match(DELIM_PAREN_C);
 				factor();
 				astFactory.addASTChild(currentAST, returnAST);
@@ -907,9 +910,9 @@ public MiParser(ParserSharedInputState state) {
 			{
 				acccomp();
 				astFactory.addASTChild(currentAST, returnAST);
-				AST tmp28_AST = null;
-				tmp28_AST = astFactory.create(LT(1));
-				astFactory.addASTChild(currentAST, tmp28_AST);
+				AST tmp27_AST = null;
+				tmp27_AST = astFactory.create(LT(1));
+				astFactory.addASTChild(currentAST, tmp27_AST);
 				match(DELIM_PAREN_C);
 				raccun_AST = (AST)currentAST.root;
 				break;
@@ -918,9 +921,9 @@ public MiParser(ParserSharedInputState state) {
 			{
 				in();
 				astFactory.addASTChild(currentAST, returnAST);
-				AST tmp29_AST = null;
-				tmp29_AST = astFactory.create(LT(1));
-				astFactory.addASTChild(currentAST, tmp29_AST);
+				AST tmp28_AST = null;
+				tmp28_AST = astFactory.create(LT(1));
+				astFactory.addASTChild(currentAST, tmp28_AST);
 				match(DELIM_PAREN_C);
 				raccun_AST = (AST)currentAST.root;
 				break;
@@ -948,18 +951,18 @@ public MiParser(ParserSharedInputState state) {
 			switch ( LA(1)) {
 			case REAL:
 			{
-				AST tmp30_AST = null;
-				tmp30_AST = astFactory.create(LT(1));
-				astFactory.addASTChild(currentAST, tmp30_AST);
+				AST tmp29_AST = null;
+				tmp29_AST = astFactory.create(LT(1));
+				astFactory.addASTChild(currentAST, tmp29_AST);
 				match(REAL);
 				num_AST = (AST)currentAST.root;
 				break;
 			}
 			case ENTERO:
 			{
-				AST tmp31_AST = null;
-				tmp31_AST = astFactory.create(LT(1));
-				astFactory.addASTChild(currentAST, tmp31_AST);
+				AST tmp30_AST = null;
+				tmp30_AST = astFactory.create(LT(1));
+				astFactory.addASTChild(currentAST, tmp30_AST);
 				match(ENTERO);
 				num_AST = (AST)currentAST.root;
 				break;
@@ -1003,6 +1006,8 @@ public MiParser(ParserSharedInputState state) {
 		"OP_IN",
 		"OP_OUT",
 		"FIN",
+		"ASIG_IGUAL",
+		"INT_O_REAL",
 		"SEP",
 		"TIPO",
 		"TIPOREAL",
@@ -1012,8 +1017,7 @@ public MiParser(ParserSharedInputState state) {
 		"DELIM_PUNTO",
 		"ID_TIPO_OPIN_OPOUT",
 		"COMENTARIO",
-		"INT_O_REAL",
-		"ASIG_IGUAL"
+		"NOT_COMP"
 	};
 	
 	protected void buildTokenTypeASTClassMap() {
@@ -1036,7 +1040,7 @@ public MiParser(ParserSharedInputState state) {
 	}
 	public static final BitSet _tokenSet_2 = new BitSet(mk_tokenSet_2());
 	private static final long[] mk_tokenSet_3() {
-		long[] data = { 16777216L, 0L};
+		long[] data = { 67108864L, 0L};
 		return data;
 	}
 	public static final BitSet _tokenSet_3 = new BitSet(mk_tokenSet_3());
@@ -1046,22 +1050,22 @@ public MiParser(ParserSharedInputState state) {
 	}
 	public static final BitSet _tokenSet_4 = new BitSet(mk_tokenSet_4());
 	private static final long[] mk_tokenSet_5() {
-		long[] data = { 16778240L, 0L};
+		long[] data = { 67109888L, 0L};
 		return data;
 	}
 	public static final BitSet _tokenSet_5 = new BitSet(mk_tokenSet_5());
 	private static final long[] mk_tokenSet_6() {
-		long[] data = { 17828864L, 0L};
+		long[] data = { 68160512L, 0L};
 		return data;
 	}
 	public static final BitSet _tokenSet_6 = new BitSet(mk_tokenSet_6());
 	private static final long[] mk_tokenSet_7() {
-		long[] data = { 17984512L, 0L};
+		long[] data = { 68316160L, 0L};
 		return data;
 	}
 	public static final BitSet _tokenSet_7 = new BitSet(mk_tokenSet_7());
 	private static final long[] mk_tokenSet_8() {
-		long[] data = { 18344960L, 0L};
+		long[] data = { 68676608L, 0L};
 		return data;
 	}
 	public static final BitSet _tokenSet_8 = new BitSet(mk_tokenSet_8());
