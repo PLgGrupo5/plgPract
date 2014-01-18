@@ -24,13 +24,14 @@ public interface MiParserTokenTypes {
 	int OP_OUT = 22;
 	int FIN = 23;
 	int SEP = 24;
-	int TIPOREAL = 25;
-	int TIPOENT = 26;
-	int LETRA = 27;
-	int DIGITO = 28;
-	int DELIM_PUNTO = 29;
-	int ID_TIPO_OPIN_OPOUT = 30;
-	int COMENTARIO = 31;
-	int INT_O_REAL = 32;
-	int ASIG_IGUAL = 33;
+	int TIPO = 25;
+	int TIPOREAL = 26;
+	int TIPOENT = 27;
+	int LETRA = 28;
+	int DIGITO = 29;
+	int DELIM_PUNTO = 30;
+	int ID_TIPO_OPIN_OPOUT = 31;
+	int COMENTARIO = 32;
+	int INT_O_REAL = 33;
+	int ASIG_IGUAL = 34;
 }

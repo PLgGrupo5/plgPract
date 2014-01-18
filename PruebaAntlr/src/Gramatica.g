@@ -48,7 +48,12 @@ acc : in
       ;
 
 in  : OP_IN ID;
-out : OP_OUT accasign;
+out : OP_OUT rout
+	  ;
+
+rout: acc
+	  | DELIM_PAREN_A rout DELIM_PAREN_C
+	  ;
 
 accasign : ID raccasign;
 raccasign: OP_AS value;
@@ -61,27 +66,30 @@ racccomp : OP_COMP accadit
 		;
 
 accadit : accmult raccadit;
-raccadit: OP_MAS accadit
-		  | OP_MENOS accadit
-		  | OP_OR accadit
+raccadit: OP_MAS accmult raccadit
+		  | OP_MENOS accmult raccadit
+		  | OP_OR accmult raccadit
 		  |
 		;
 
 accmult  : accun raccmult;
-raccmult :  OP_MUL_DIV accmult
-			| OP_MOD accmult
-			| OP_AND accmult
+raccmult :  OP_MUL_DIV accun raccmult
+			| OP_AND accun raccmult 
+			| OP_MOD accun raccmult
 			|
 		 ;
 
 accun   : factor
-		 | OP_MENOS factor
-		 | OP_NOT factor
+		 | OP_MENOS accun//cambiar accun
+		 | OP_NOT accun//cambiar accun
 		 | DELIM_PAREN_A raccun
+		 
 	    ;
-raccun  : accadit DELIM_PAREN_C
+
+raccun : TIPO DELIM_PAREN_C factor
+		| acccomp DELIM_PAREN_C
+		| in DELIM_PAREN_C
 		;
-rraccun: DELIM_PAREN_C factor;
 
 factor : ID
 		 |num
