@@ -1,4 +1,6 @@
 class MiParser extends Parser;options {buildAST=true;}
+
+
 tokens{
 ENTERO ;
 REAL;
@@ -25,36 +27,61 @@ INT_O_REAL;
 }
 
 
-sprog: prog FIN;
-prog : decs accs;
+sprog  : prog FIN;
+prog {TablaSimbolos TBS;}:
+						TBS=decs 
+						(accs [TBS]);
 
 
 
-decs : dec rdecs
-	  |
-	 ;
-rdecs : SEP rrdecs;
-rrdecs : decs
-		;
+decs returns [TablaSimbolos TB = new TablaSimbolos();]
+		{Declaracion dec1; TablaSimbolos TBS;}:
+						dec1=dec
+						TBS=rdecs
+						{TBS.insertaDec(dec1);
+						TB=TBS;}
+	  			|		
+	  					{TB= new TablaSimbolos();}
+	 					;
+exception
+catch [ANTLRException e]
+{System.out.println (e.getMessage());
+ System.out.println("Hemos descubierto un error");}
+	 					
+rdecs returns [TablaSimbolos TBS = new TablaSimbolos();]:
+						SEP
+						TBS=rrdecs
+						;
+rrdecs returns [TablaSimbolos TBS = new TablaSimbolos();]:
+						TBS=decs
+						;
 
-dec : tipo ID;
+dec returns [Declaracion deca = new Declaracion();]{String nombreTipo, nombreVar;}:
+						nombreTipo=tipo
+						ident:ID
+						{
+							nombreVar = ident.getText();
+							System.out.println(nombreVar);
+							Declaracion decla = new Declaracion (nombreTipo, nombreVar);
+							deca=decla;
+						}
+						;
 
+accs[TablaSimbolos TBh] : acc [TBh] racs[TBh];
+racs [TablaSimbolos TBh] : SEP rracs [TBh];
+rracs [TablaSimbolos TBh]: accs[TBh] | ;
 
-accs : acc racs;
-racs : SEP rracs;
-rracs: accs | ;
-
-acc : in
-	  |out
+acc [TablaSimbolos TBh] : in
+	  |out [TBh]
       |accasign
       ;
 
 in  : OP_IN ID;
-out : OP_OUT rout
+out [TablaSimbolos TBh] : OP_OUT rout [TBh]
 	  ;
 
-rout: acc
-	  | DELIM_PAREN_A rout DELIM_PAREN_C
+rout [TablaSimbolos TBh]: acc [TBh]
+	  | DELIM_PAREN_A rout [TBh] DELIM_PAREN_C
 	  ;
 
 accasign : ident:ID raccasign
@@ -89,7 +116,7 @@ accun   : factor
 		 
 	    ;
 
-raccun : TIPO DELIM_PAREN_C factor
+raccun : tipo DELIM_PAREN_C factor
 		| acccomp DELIM_PAREN_C
 		| in DELIM_PAREN_C
 		;
@@ -99,7 +126,9 @@ factor : ID
 	   ;
 
 num : REAL | ENTERO;
-tipo: TIPOREAL | TIPOENT;
+tipo returns [String tipo=""]:
+			{tipo="real";} TIPOREAL
+			|{tipo = "entero";} TIPOENT;
 
 
 

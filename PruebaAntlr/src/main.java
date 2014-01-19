@@ -11,7 +11,6 @@ import antlr.TokenStreamException;
 import antlr.collections.AST;
 
 
-
 public class main {//solo scanner
 private static String fileName = "prueba1.txt";
 private static FileInputStream fis = null;
@@ -19,7 +18,7 @@ private static FileInputStream fis = null;
 	public static void main(String args[]) {
 		try
 		{
-		/*	System.out.println("Scanning file...");
+			/*System.out.println("Scanning file...");
 			System.out.println(new File(".").getAbsolutePath());
 			fis = new FileInputStream("codigo.txt");
 			MiLexer scan = new MiLexer(fis);
