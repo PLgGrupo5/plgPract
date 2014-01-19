@@ -40,5 +40,10 @@ public class Linea {
 	public void setDirMemoria(int dirMemoria) {
 		this.dirMemoria = dirMemoria;
 	}
+	@Override
+	public String toString() {
+		return "Linea [nombre=" + nombre + ", tipo=" + tipo + ", dirMemoria="
+				+ dirMemoria + "]";
+	}
 	
 }

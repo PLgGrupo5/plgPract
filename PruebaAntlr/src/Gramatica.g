@@ -1,4 +1,4 @@
-class MiParser extends Parser;options {buildAST=true;}
+class MiParser extends Parser;options {k=2;buildAST=true;}
 
 
 tokens{
@@ -24,29 +24,39 @@ OP_OUT;
 FIN ;
 ASIG_IGUAL;
 INT_O_REAL;
+COMP1_2;
+NOT_COMP;
 }
 
 
-sprog  : prog FIN;
-prog {TablaSimbolos TBS;}:
+sprog  {String cod;}: cod=prog FIN;
+prog returns [String cod="";]{TablaSimbolos TBS;}:
 						TBS=decs 
-						(accs [TBS]);
+						(cod=accs [TBS])
+						{System.out.println(cod);}
+						;
 
-
+//====================================================
+//DECLARACIONES
+//====================================================
 
 decs returns [TablaSimbolos TB = new TablaSimbolos();]
 		{Declaracion dec1; TablaSimbolos TBS;}:
 						dec1=dec
 						TBS=rdecs
-						{TBS.insertaDec(dec1);
-						TB=TBS;}
+						{
+							TBS.insertaDec(dec1);
+							TB=TBS;
+						}
 	  			|		
-	  					{TB= new TablaSimbolos();}
+	  					{	
+	  						TB= new TablaSimbolos();
+	  					}
 	 					;
-exception
+/*exception
 catch [ANTLRException e]
 {System.out.println (e.getMessage());
- System.out.println("Hemos descubierto un error");}
+ System.out.println("Hemos descubierto un error");}*/
 	 					
 rdecs returns [TablaSimbolos TBS = new TablaSimbolos();]:
 						SEP
@@ -61,71 +71,219 @@ dec returns [Declaracion deca = new Declaracion();]{String nombreTipo, nombreVar
 						ident:ID
 						{
 							nombreVar = ident.getText();
-							System.out.println(nombreVar);
+							//System.out.println(nombreVar);
 							Declaracion decla = new Declaracion (nombreTipo, nombreVar);
 							deca=decla;
 						}
 						;
 
-accs[TablaSimbolos TBh] : acc [TBh] racs[TBh];
-racs [TablaSimbolos TBh] : SEP rracs [TBh];
-rracs [TablaSimbolos TBh]: accs[TBh] | ;
 
-acc [TablaSimbolos TBh] : in
-	  |out [TBh]
-      |accasign
-      ;
 
-in  : OP_IN ID;
-out [TablaSimbolos TBh] : OP_OUT rout [TBh]
-	  ;
 
-rout [TablaSimbolos TBh]: acc [TBh]
-	  | DELIM_PAREN_A rout [TBh] DELIM_PAREN_C
-	  ;
+//====================================================
+//ACCIONES
+//====================================================
 
-accasign : ident:ID raccasign
-;
-raccasign: OP_AS value;
-value    : raccasign | acccomp;
+accs [TablaSimbolos TBh] returns [String cod=""] {String cod1, cod2;}:
+								cod1=acc [TBh]
+								cod2=racs[TBh]
+								{	
+									cod= cod1 + cod2 + "\n";
+								}
+								;
 
-acccomp  : accadit racccomp;
-racccomp : OP_COMP accadit
-		   |OP_IGUAL accadit
-		   | 
-		;
+racs [TablaSimbolos TBh] returns [String cod = ""] {String cod1,desap;}:
+								SEP
+								cod1=rracs [TBh]
+								{	
+									desap="desapila()\n";
+									cod = desap + cod1;
+								} 
+								;
 
-accadit : accmult raccadit;
-raccadit: OP_MAS accmult raccadit
-		  | OP_MENOS accmult raccadit
-		  | OP_OR accmult raccadit
-		  |
-		;
+rracs [TablaSimbolos TBh]returns [String cod=""]:
+										cod=accs[TBh]
+									| 
+									;
 
-accmult  : accun raccmult;
-raccmult :  OP_MUL_DIV accun raccmult
-			| OP_AND accun raccmult 
-			| OP_MOD accun raccmult
-			|
-		 ;
+acc [TablaSimbolos TBh] returns [String cod=""] :
+									 cod=in [TBh]
+	  								|cod=out [TBh]
+      								|cod=accasign[TBh]
+      								;
 
-accun   : factor
-		 | OP_MENOS accun//cambiar accun
-		 | OP_NOT accun//cambiar accun
-		 | DELIM_PAREN_A raccun
+in [TablaSimbolos TBh] returns [String cod = ""]{Linea linea;}: OP_IN id:ID
+								{
+									linea = TBh.getLinea(id.getText().toLowerCase());
+									cod = "lectura("+linea.getDirMemoria()+")\n";
+									cod += "apilaDir("+linea.getDirMemoria()+")\n";
+								}
+							;
+out [TablaSimbolos TBh]returns [String cod = ""]{String cod1;}: OP_OUT cod1=rout [TBh]
+								{
+									cod += cod1 + "escritura\n";
+								}
+	  							;
+	  
+rout [TablaSimbolos TBh] returns [String cod="";]:
+								cod=acc [TBh]
+	  							| DELIM_PAREN_A cod=acccomp[TBh] DELIM_PAREN_C
+	  							;	  
+
+/*
+rout [TablaSimbolos TBh] returns [String cod="";]:
+								cod=acc [TBh]
+	  							| DELIM_PAREN_A cod=rout [TBh] DELIM_PAREN_C
+	  							| cod=acccomp[TBh]
+	  							;	 */
+accasign[TablaSimbolos TBh]returns[String cod = "";]{String cod1;Linea linea;} :
+								ident:ID
+								cod1=raccasign[TBh]
+								{
+									linea=TBh.getLinea(ident.getText().toLowerCase());
+									cod=cod1+"desapilaDir("+linea.getDirMemoria()+")\n";
+									cod+="apilaDir("+linea.getDirMemoria()+")\n";
+									
+								}
+							;
+raccasign[TablaSimbolos TBh]returns [String cod="";]:
+								OP_AS cod=value[TBh]
+							;
+value[TablaSimbolos TBh] returns [String cod = "";] :
+								cod=raccasign[TBh]
+								| cod=acccomp[TBh]
+							;
+
+acccomp [TablaSimbolos TBh] returns [String cod="";]{String cod1;}: 
+								cod1=accadit[TBh]
+								cod=racccomp[TBh,cod1]
+							;
+racccomp[TablaSimbolos TBh, String codh] returns [String cod="";]{String op,cod1;}:
+								(opc:OP_COMP|opi:OP_IGUAL|opc1:OP_COMP1|opc2:OP_COMP2)
+								cod1=accadit[TBh]
+								
+								{
+									op="";
+									if (opi!=null)
+										op="igual()\n";
+									else if (opc!=null)
+									{
+										op="distinto()\n";
+									}
+									else if (opc1!=null)
+											{
+												if (opc1.getText()=="<=")
+													op="menor_o_igual()\n";
+												else
+													op="mayor_o_igual()\n";
+											}else if (opc2!=null)
+											{
+												if (opc2.getText()=="<")
+													op="menor_que()\n";
+												else
+													op="mayor_que()\n";
+											}
+									cod=codh+cod1+op;
+									;
+								}
+		  				 	| {cod=codh;}
+							;
+
+accadit[TablaSimbolos TBh] returns [String cod="";]{String cod1;}:
+								cod1=accmult[TBh]
+								cod=raccadit[TBh,cod1]
+							;
+raccadit[TablaSimbolos TBh, String codh] returns [String cod=""]{String cod1,cod2,op;}:
+								(opma:OP_MAS|opme:OP_MENOS|opor:OP_OR)
+								cod1=accmult[TBh]
+								{
+									op="";
+									if (opma!=null)
+										op="suma()\n";
+									if (opme!=null)
+										op="resta()\n";
+									if (opor!=null)
+										op="or()\n";
+									cod2=codh+cod1+op;
+								}
+								cod=raccadit[TBh,cod2]
+		  						|{cod =codh;}
+							;
+
+accmult[TablaSimbolos TBh] returns [String cod="";]{String cod1;}:
+								cod1=accun[TBh]
+								cod=raccmult[TBh,cod1]
+							;
+raccmult[TablaSimbolos TBh, String codh] returns [String cod="";] {String cod1,cod2,op;}:
+								(opmu:OP_MUL_DIV|opan:OP_AND|opmo:OP_MOD)
+								cod1=accun[TBh]
+								{
+									op="";
+									if (opmu!=null)
+										if (opmu.getText()=="*")
+											op="multiplicacion()\n";
+										else
+											op="division()\n";
+									if (opan!=null)
+										op="and()\n";
+									if (opmo!=null)
+										op="modulo()\n";
+									cod2=codh+cod1+op;
+								}
+								cod=raccmult[TBh,cod2]
+								|{cod=codh;}
+		 					;
+
+accun[TablaSimbolos TBh] returns [String cod="";]{String op, cod1;}:
+								cod=factor[TBh]
+						 		|(opme:OP_MENOS|opno:OP_NOT)
+						 		cod1=accun[TBh]
+						 		{
+						 			op="";
+						 			if (opme!=null)
+						 				op="invierte()\n";
+						 			else if (opno!=null)
+						 				op="not()\n";
+						 			cod=cod1 + op;
+						 		}
+								| DELIM_PAREN_A cod=raccun[TBh]
+								
 		 
-	    ;
+	    					;
 
-raccun : tipo DELIM_PAREN_C factor
-		| acccomp DELIM_PAREN_C
-		| in DELIM_PAREN_C
-		;
+raccun [TablaSimbolos TBh]returns [String cod="";]{String cod1, cod2;}:
+								cod1=tipo
+								DELIM_PAREN_C
+								cod2=factor[TBh]
+								{
+									cod = cod2 + "convierte_"+cod1+"()\n";
+								}
+								| cod= acccomp[TBh] DELIM_PAREN_C
+								| cod= accasign [TBh] DELIM_PAREN_C
+								| cod=in [TBh] DELIM_PAREN_C
+							;
 
-factor : ID
-		 |num
-	   ;
+factor [TablaSimbolos TBh]returns [String cod="";]{Linea linea;}:
+								iden:ID
+								{
+									linea=TBh.getLinea(iden.getText().toLowerCase());
+									cod= "apilaDir("+linea.getDirMemoria()+")\n";
+								}
+		 						|cod=num
+		 	
+	   						;
 
-num : REAL | ENTERO;
+num returns[String cod="";]:
+								r:REAL
+								{
+									cod="apila("+r.getText()+")\n";
+								} 
+								| e:ENTERO
+								{
+									cod="apila("+e.getText()+")\n";
+								} 
+							;
+
 tipo returns [String tipo=""]:
 			{tipo="real";} TIPOREAL
 			|{tipo = "entero";} TIPOENT;
@@ -148,8 +306,15 @@ protected ID : (LETRA | '_') (((LETRA) | ENTERO | '_' ))*  ( '?')? ;
 protected OP_AS : '=';
 protected OP_IGUAL: "==";
 protected OP_NOT : '!';
-protected OP_COMP : "!="|'>'|'<'|">="|"<=";
 
+protected OP_COMP : "!=";
+protected OP_COMP1 : '>'|'<';
+protected OP_COMP2 : ">="|"<=";
+
+
+COMP1_2: (OP_COMP1 '=')=> OP_COMP2 {$setType(OP_COMP2);}
+		|(OP_COMP1) => OP_COMP1 {$setType(OP_COMP1);}
+		;
 
 ID_TIPO_OPIN_OPOUT:   (OP_IN ('T'|'t') ' ')=> TIPOENT {$setType(TIPOENT);}
 				| (OP_IN ('T'|'t') ~' ') => ID {$setType(ID);} 
@@ -157,6 +322,7 @@ ID_TIPO_OPIN_OPOUT:   (OP_IN ('T'|'t') ' ')=> TIPOENT {$setType(TIPOENT);}
 				| (OP_IN (' '))=> OP_IN {$setType(OP_IN);}
 				| (OP_OUT ' ')=>OP_OUT {$setType(OP_OUT);}
 		  		| (OP_OUT ~(' '))=> ID {$setType(ID);}
+		  		| (TIPOREAL ' ')=> TIPOREAL {$setType(TIPOREAL);}
 				| (ID) => ID {$setType(ID);}
 		  ;
 

@@ -35,7 +35,7 @@ private static FileInputStream fis = null;
 			CommonAST a = (CommonAST)par.getAST();
 			System.out.println("Resultado ASA: "+a.toStringList());
 		}catch (ANTLRException ae){
-			System.err.println(ae.getMessage());
+			System.err.println(ae.getMessage() + "y aqui intervenimos");
 		}catch(FileNotFoundException fnfe){
 			System.err.println("No se encontró el fichero");
 		}

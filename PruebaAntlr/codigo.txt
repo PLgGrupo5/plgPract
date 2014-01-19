@@ -1,6 +1,7 @@
-int pepe;
-int juan;
-int juan;
+real cantidadTotal; 
+int euros; 
+real centimos; 
 
-alfa = ( int ) 3;
+out euros = ( in centimos );
+cantidadTotal = ( int ) euros;
 $$
