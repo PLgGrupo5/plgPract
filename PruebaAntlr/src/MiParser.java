@@ -466,7 +466,7 @@ public MiParser(ParserSharedInputState state) {
 			cod1=rout(TBh);
 			astFactory.addASTChild(currentAST, returnAST);
 			
-												cod += cod1 + "escritura\n";
+												cod += cod1 + "escritura()\n";
 											
 			out_AST = (AST)currentAST.root;
 		}

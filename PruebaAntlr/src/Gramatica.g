@@ -121,7 +121,7 @@ in [TablaSimbolos TBh] returns [String cod = ""]{Linea linea;}: OP_IN id:ID
 							;
 out [TablaSimbolos TBh]returns [String cod = ""]{String cod1;}: OP_OUT cod1=rout [TBh]
 								{
-									cod += cod1 + "escritura\n";
+									cod += cod1 + "escritura()\n";
 								}
 	  							;
 	  
@@ -358,7 +358,7 @@ ASIG_IGUAL: (OP_AS '=')=> OP_IGUAL {$setType(OP_IGUAL);}
 			; 
 			
 NOT_COMP: (OP_NOT ('='))=> OP_COMP {$setType(OP_COMP);}
-		  | OP_NOT
+		  | (OP_NOT) => OP_NOT {$setType(OP_NOT);}
 		  ;
 
 FIN : "$$";

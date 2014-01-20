@@ -1,7 +1,7 @@
+@ Programa de ejemplo 1
 real cantidadTotal; 
 int euros; 
 real centimos; 
 
-out euros = ( in centimos );
-cantidadTotal = ( int ) euros;
+euros = ! euros;
 $$
