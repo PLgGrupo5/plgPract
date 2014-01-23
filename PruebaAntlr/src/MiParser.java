@@ -523,18 +523,12 @@ public MiParser(ParserSharedInputState state) {
 		AST rout_AST = null;
 		
 		try {      // for error handling
-			switch ( LA(1)) {
-			case ID:
-			case OP_IN:
-			case OP_OUT:
-			{
+			if ((LA(1)==ID||LA(1)==OP_IN||LA(1)==OP_OUT) && (_tokenSet_6.member(LA(2)))) {
 				cod=acc(TBh);
 				astFactory.addASTChild(currentAST, returnAST);
 				rout_AST = (AST)currentAST.root;
-				break;
 			}
-			case DELIM_PAREN_A:
-			{
+			else if ((LA(1)==DELIM_PAREN_A) && (_tokenSet_7.member(LA(2)))) {
 				AST tmp8_AST = null;
 				tmp8_AST = astFactory.create(LT(1));
 				astFactory.addASTChild(currentAST, tmp8_AST);
@@ -546,13 +540,16 @@ public MiParser(ParserSharedInputState state) {
 				astFactory.addASTChild(currentAST, tmp9_AST);
 				match(DELIM_PAREN_C);
 				rout_AST = (AST)currentAST.root;
-				break;
 			}
-			default:
-			{
+			else if ((_tokenSet_7.member(LA(1))) && (_tokenSet_8.member(LA(2)))) {
+				cod=acccomp(TBh);
+				astFactory.addASTChild(currentAST, returnAST);
+				rout_AST = (AST)currentAST.root;
+			}
+			else {
 				throw new NoViableAltException(LT(1), getFilename());
 			}
-			}
+			
 		}
 		catch (RecognitionException ex) {
 			reportError(ex);
@@ -676,7 +673,7 @@ public MiParser(ParserSharedInputState state) {
 		}
 		catch (RecognitionException ex) {
 			reportError(ex);
-			recover(ex,_tokenSet_6);
+			recover(ex,_tokenSet_9);
 		}
 		returnAST = accadit_AST;
 		return cod;
@@ -816,7 +813,7 @@ public MiParser(ParserSharedInputState state) {
 		}
 		catch (RecognitionException ex) {
 			reportError(ex);
-			recover(ex,_tokenSet_7);
+			recover(ex,_tokenSet_10);
 		}
 		returnAST = accmult_AST;
 		return cod;
@@ -912,7 +909,7 @@ public MiParser(ParserSharedInputState state) {
 		}
 		catch (RecognitionException ex) {
 			reportError(ex);
-			recover(ex,_tokenSet_6);
+			recover(ex,_tokenSet_9);
 		}
 		returnAST = raccadit_AST;
 		return cod;
@@ -1002,7 +999,7 @@ public MiParser(ParserSharedInputState state) {
 		}
 		catch (RecognitionException ex) {
 			reportError(ex);
-			recover(ex,_tokenSet_8);
+			recover(ex,_tokenSet_11);
 		}
 		returnAST = accun_AST;
 		return cod;
@@ -1104,7 +1101,7 @@ public MiParser(ParserSharedInputState state) {
 		}
 		catch (RecognitionException ex) {
 			reportError(ex);
-			recover(ex,_tokenSet_7);
+			recover(ex,_tokenSet_10);
 		}
 		returnAST = raccmult_AST;
 		return cod;
@@ -1153,7 +1150,7 @@ public MiParser(ParserSharedInputState state) {
 		}
 		catch (RecognitionException ex) {
 			reportError(ex);
-			recover(ex,_tokenSet_8);
+			recover(ex,_tokenSet_11);
 		}
 		returnAST = factor_AST;
 		return cod;
@@ -1200,7 +1197,7 @@ public MiParser(ParserSharedInputState state) {
 				break;
 			}
 			default:
-				if ((_tokenSet_9.member(LA(1))) && (_tokenSet_10.member(LA(2)))) {
+				if ((_tokenSet_7.member(LA(1))) && (_tokenSet_12.member(LA(2)))) {
 					cod=acccomp(TBh);
 					astFactory.addASTChild(currentAST, returnAST);
 					AST tmp14_AST = null;
@@ -1225,7 +1222,7 @@ public MiParser(ParserSharedInputState state) {
 		}
 		catch (RecognitionException ex) {
 			reportError(ex);
-			recover(ex,_tokenSet_8);
+			recover(ex,_tokenSet_11);
 		}
 		returnAST = raccun_AST;
 		return cod;
@@ -1276,7 +1273,7 @@ public MiParser(ParserSharedInputState state) {
 		}
 		catch (RecognitionException ex) {
 			reportError(ex);
-			recover(ex,_tokenSet_8);
+			recover(ex,_tokenSet_11);
 		}
 		returnAST = num_AST;
 		return cod;
@@ -1359,29 +1356,39 @@ public MiParser(ParserSharedInputState state) {
 	}
 	public static final BitSet _tokenSet_5 = new BitSet(mk_tokenSet_5());
 	private static final long[] mk_tokenSet_6() {
-		long[] data = { 1880099840L, 0L};
+		long[] data = { 6836848L, 0L};
 		return data;
 	}
 	public static final BitSet _tokenSet_6 = new BitSet(mk_tokenSet_6());
 	private static final long[] mk_tokenSet_7() {
-		long[] data = { 1880255488L, 0L};
+		long[] data = { 541296L, 0L};
 		return data;
 	}
 	public static final BitSet _tokenSet_7 = new BitSet(mk_tokenSet_7());
 	private static final long[] mk_tokenSet_8() {
-		long[] data = { 1880615936L, 0L};
+		long[] data = { 8325687920L, 0L};
 		return data;
 	}
 	public static final BitSet _tokenSet_8 = new BitSet(mk_tokenSet_8());
 	private static final long[] mk_tokenSet_9() {
-		long[] data = { 541296L, 0L};
+		long[] data = { 1880099840L, 0L};
 		return data;
 	}
 	public static final BitSet _tokenSet_9 = new BitSet(mk_tokenSet_9());
 	private static final long[] mk_tokenSet_10() {
-		long[] data = { 8057253488L, 0L};
+		long[] data = { 1880255488L, 0L};
 		return data;
 	}
 	public static final BitSet _tokenSet_10 = new BitSet(mk_tokenSet_10());
+	private static final long[] mk_tokenSet_11() {
+		long[] data = { 1880615936L, 0L};
+		return data;
+	}
+	public static final BitSet _tokenSet_11 = new BitSet(mk_tokenSet_11());
+	private static final long[] mk_tokenSet_12() {
+		long[] data = { 8057253488L, 0L};
+		return data;
+	}
+	public static final BitSet _tokenSet_12 = new BitSet(mk_tokenSet_12());
 	
 	}

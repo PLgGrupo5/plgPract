@@ -128,14 +128,9 @@ out [TablaSimbolos TBh]returns [String cod = ""]{String cod1;}: OP_OUT cod1=rout
 rout [TablaSimbolos TBh] returns [String cod="";]:
 								cod=acc [TBh]
 	  							| DELIM_PAREN_A cod=acccomp[TBh] DELIM_PAREN_C
-	  							;	  
-
-/*
-rout [TablaSimbolos TBh] returns [String cod="";]:
-								cod=acc [TBh]
-	  							| DELIM_PAREN_A cod=rout [TBh] DELIM_PAREN_C
 	  							| cod=acccomp[TBh]
-	  							;	 */
+	  							;
+
 accasign[TablaSimbolos TBh]returns[String cod = "";]{String cod1;Linea linea;} :
 								ident:ID
 								cod1=raccasign[TBh]
@@ -327,6 +322,7 @@ ID_TIPO_OPIN_OPOUT:   (OP_IN ('T'|'t') ' ')=> TIPOENT {$setType(TIPOENT);}
 		  ;
 
 COMENTARIO : '@' ( LETRA|DIGITO|DELIM_PUNTO|' '|'\t')* ('\r') {$setType(Token.SKIP);};
+
 
 INT_O_REAL: ( ENTERO (DELIM_PUNTO)) => REAL {$setType(REAL);}
 			| ENTERO {$setType (ENTERO);}

@@ -1,7 +1,63 @@
 @ Programa de ejemplo 1
+
+@declaraciones
 real cantidadTotal; 
 int euros; 
-real centimos; 
+real centimos;
 
-euros = ! euros;
+@operaciones basicas
+
+in euros;
+out  2 + 5;
+out  2 * 5;
+out  2 / 5;
+out  2 && 5;
+out  2 || 5;
+out  2 - 5;
+out  2 % 5;
+out  !5;
+out  -5;
+out  ( int ) 5.5;
+out ( real ) 3;
+out  7;
+out  2 < 5;
+out  2 > 5;
+out  2 <= 5;
+out  2 >= 5;
+out  2 == 5;
+euros = 3;
+out 2 < 5.5 ;
+
+
+
+out (euros - cantidadtotal);
+out  euros + 5;
+out  euros * 5;
+out  euros / 5;
+out  euros && 5;
+out  euros || 5;
+out  euros % 5;
+out  !euros;
+out  -euros;
+out  ( int ) euros;
+out ( real ) euros;
+out  euros;
+out  euros < 5;
+out  euros > 5;
+out  euros <= 5;
+out  euros >= 5;
+out  euros == 5;
+euros = euros;
+out euros < 5.5 ;
+
+euros = 3 - 5;
+cantidadtotal = euros - centimos;
+
+euros = (cantidadtotal = (centimos = euros));
+out out out 3;
+in cantidadTotal;
+out euros = 2;@esto es un comentario
+out centimos = ! euros;
+out cantidadTotal = ( euros * centimos +( 8 ));
+cantidadtotal = (euros*2)+euros;
 $$
