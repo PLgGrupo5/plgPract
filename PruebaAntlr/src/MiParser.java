@@ -578,7 +578,7 @@ public MiParser(ParserSharedInputState state) {
 		}
 		catch (RecognitionException ex) {
 			reportError(ex);
-			recover(ex,_tokenSet_5);
+			recover(ex,_tokenSet_9);
 		}
 		returnAST = acccomp_AST;
 		return cod;
@@ -698,12 +698,7 @@ public MiParser(ParserSharedInputState state) {
 		String op,cod1;
 		
 		try {      // for error handling
-			switch ( LA(1)) {
-			case OP_IGUAL:
-			case OP_COMP:
-			case OP_COMP1:
-			case OP_COMP2:
-			{
+			if ((_tokenSet_10.member(LA(1))) && (_tokenSet_7.member(LA(2)))) {
 				{
 				switch ( LA(1)) {
 				case OP_COMP:
@@ -771,24 +766,19 @@ public MiParser(ParserSharedInputState state) {
 													;
 												
 				racccomp_AST = (AST)currentAST.root;
-				break;
 			}
-			case DELIM_PAREN_C:
-			case SEP:
-			{
+			else if ((_tokenSet_9.member(LA(1))) && (_tokenSet_11.member(LA(2)))) {
 				cod=codh;
 				racccomp_AST = (AST)currentAST.root;
-				break;
 			}
-			default:
-			{
+			else {
 				throw new NoViableAltException(LT(1), getFilename());
 			}
-			}
+			
 		}
 		catch (RecognitionException ex) {
 			reportError(ex);
-			recover(ex,_tokenSet_5);
+			recover(ex,_tokenSet_9);
 		}
 		returnAST = racccomp_AST;
 		return cod;
@@ -813,7 +803,7 @@ public MiParser(ParserSharedInputState state) {
 		}
 		catch (RecognitionException ex) {
 			reportError(ex);
-			recover(ex,_tokenSet_10);
+			recover(ex,_tokenSet_9);
 		}
 		returnAST = accmult_AST;
 		return cod;
@@ -836,11 +826,7 @@ public MiParser(ParserSharedInputState state) {
 		String cod1,cod2,op;
 		
 		try {      // for error handling
-			switch ( LA(1)) {
-			case OP_MAS:
-			case OP_MENOS:
-			case OP_OR:
-			{
+			if ((LA(1)==OP_MAS||LA(1)==OP_MENOS||LA(1)==OP_OR) && (_tokenSet_7.member(LA(2)))) {
 				{
 				switch ( LA(1)) {
 				case OP_MAS:
@@ -888,24 +874,15 @@ public MiParser(ParserSharedInputState state) {
 				cod=raccadit(TBh,cod2);
 				astFactory.addASTChild(currentAST, returnAST);
 				raccadit_AST = (AST)currentAST.root;
-				break;
 			}
-			case DELIM_PAREN_C:
-			case OP_IGUAL:
-			case OP_COMP:
-			case SEP:
-			case OP_COMP1:
-			case OP_COMP2:
-			{
+			else if ((_tokenSet_9.member(LA(1))) && (_tokenSet_11.member(LA(2)))) {
 				cod =codh;
 				raccadit_AST = (AST)currentAST.root;
-				break;
 			}
-			default:
-			{
+			else {
 				throw new NoViableAltException(LT(1), getFilename());
 			}
-			}
+			
 		}
 		catch (RecognitionException ex) {
 			reportError(ex);
@@ -999,7 +976,7 @@ public MiParser(ParserSharedInputState state) {
 		}
 		catch (RecognitionException ex) {
 			reportError(ex);
-			recover(ex,_tokenSet_11);
+			recover(ex,_tokenSet_9);
 		}
 		returnAST = accun_AST;
 		return cod;
@@ -1022,11 +999,7 @@ public MiParser(ParserSharedInputState state) {
 		String cod1,cod2,op;
 		
 		try {      // for error handling
-			switch ( LA(1)) {
-			case OP_MOD:
-			case OP_MUL_DIV:
-			case OP_AND:
-			{
+			if ((LA(1)==OP_MOD||LA(1)==OP_MUL_DIV||LA(1)==OP_AND) && (_tokenSet_7.member(LA(2)))) {
 				{
 				switch ( LA(1)) {
 				case OP_MUL_DIV:
@@ -1077,31 +1050,19 @@ public MiParser(ParserSharedInputState state) {
 				cod=raccmult(TBh,cod2);
 				astFactory.addASTChild(currentAST, returnAST);
 				raccmult_AST = (AST)currentAST.root;
-				break;
 			}
-			case DELIM_PAREN_C:
-			case OP_IGUAL:
-			case OP_MAS:
-			case OP_MENOS:
-			case OP_OR:
-			case OP_COMP:
-			case SEP:
-			case OP_COMP1:
-			case OP_COMP2:
-			{
+			else if ((_tokenSet_9.member(LA(1))) && (_tokenSet_11.member(LA(2)))) {
 				cod=codh;
 				raccmult_AST = (AST)currentAST.root;
-				break;
 			}
-			default:
-			{
+			else {
 				throw new NoViableAltException(LT(1), getFilename());
 			}
-			}
+			
 		}
 		catch (RecognitionException ex) {
 			reportError(ex);
-			recover(ex,_tokenSet_10);
+			recover(ex,_tokenSet_9);
 		}
 		returnAST = raccmult_AST;
 		return cod;
@@ -1150,7 +1111,7 @@ public MiParser(ParserSharedInputState state) {
 		}
 		catch (RecognitionException ex) {
 			reportError(ex);
-			recover(ex,_tokenSet_11);
+			recover(ex,_tokenSet_9);
 		}
 		returnAST = factor_AST;
 		return cod;
@@ -1177,7 +1138,7 @@ public MiParser(ParserSharedInputState state) {
 				tmp12_AST = astFactory.create(LT(1));
 				astFactory.addASTChild(currentAST, tmp12_AST);
 				match(DELIM_PAREN_C);
-				cod2=factor(TBh);
+				cod2=acccomp(TBh);
 				astFactory.addASTChild(currentAST, returnAST);
 				
 													cod = cod2 + "convierte_"+cod1+"()\n";
@@ -1222,7 +1183,7 @@ public MiParser(ParserSharedInputState state) {
 		}
 		catch (RecognitionException ex) {
 			reportError(ex);
-			recover(ex,_tokenSet_11);
+			recover(ex,_tokenSet_9);
 		}
 		returnAST = raccun_AST;
 		return cod;
@@ -1273,7 +1234,7 @@ public MiParser(ParserSharedInputState state) {
 		}
 		catch (RecognitionException ex) {
 			reportError(ex);
-			recover(ex,_tokenSet_11);
+			recover(ex,_tokenSet_9);
 		}
 		returnAST = num_AST;
 		return cod;
@@ -1371,17 +1332,17 @@ public MiParser(ParserSharedInputState state) {
 	}
 	public static final BitSet _tokenSet_8 = new BitSet(mk_tokenSet_8());
 	private static final long[] mk_tokenSet_9() {
-		long[] data = { 1880099840L, 0L};
+		long[] data = { 1880615936L, 0L};
 		return data;
 	}
 	public static final BitSet _tokenSet_9 = new BitSet(mk_tokenSet_9());
 	private static final long[] mk_tokenSet_10() {
-		long[] data = { 1880255488L, 0L};
+		long[] data = { 1611663360L, 0L};
 		return data;
 	}
 	public static final BitSet _tokenSet_10 = new BitSet(mk_tokenSet_10());
 	private static final long[] mk_tokenSet_11() {
-		long[] data = { 1880615936L, 0L};
+		long[] data = { 1895820912L, 0L};
 		return data;
 	}
 	public static final BitSet _tokenSet_11 = new BitSet(mk_tokenSet_11());

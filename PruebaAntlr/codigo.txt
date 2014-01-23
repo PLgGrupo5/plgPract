@@ -5,7 +5,7 @@ real cantidadTotal;
 int euros; 
 real centimos;
 
-@operaciones basicas
+@out de operaciones basicas con numeros
 
 in euros;
 out  2 + 5;
@@ -26,11 +26,13 @@ out  2 <= 5;
 out  2 >= 5;
 out  2 == 5;
 euros = 3;
-out 2 < 5.5 ;
+out 2 < 5.5;
+out 2 * 2 * 5;
+out 2 * 2 + 5;
 
 
-
-out (euros - cantidadtotal);
+@out de operaciones basicas con numeros y variables
+out  3 - euros;
 out  euros + 5;
 out  euros * 5;
 out  euros / 5;
@@ -50,11 +52,127 @@ out  euros == 5;
 euros = euros;
 out euros < 5.5 ;
 
+@operaciones basicas de asignacion con numeros
 euros = 3 - 5;
-cantidadtotal = euros - centimos;
+euros = 3 + 5;
+euros = 3 * 5;
+euros = 3 / 5;
+euros = 3 && 5;
+euros = 3 || 5;
+euros = 3 % 5;
+euros = !euros;
+euros = -euros;
+euros = ( int ) euros;
+euros = ( real ) euros;
+euros = 2;
+euros = 3 < 5;
+euros = 3 > 5;
+euros = 3 <= 5;
+euros = 3 >= 5;
+euros = 3 == 5;
 
-euros = (cantidadtotal = (centimos = euros));
+@operaciones basicas de asignacion con numeros y variables
+euros = centimos - 5;
+euros = centimos + 5;
+euros = centimos * 5;
+euros = centimos / 5;
+euros = centimos && 5;
+euros = centimos || 5;
+euros = centimos % 5;
+euros = !euros;
+euros = -euros;
+euros = ( int ) euros;
+euros = ( real ) euros;
+euros = euros;
+euros = centimos < 5;
+euros = centimos > 5;
+euros = centimos <= 5;
+euros = centimos >= 5;
+euros = centimos == 5;
+
+@operaciones basicas con parentesis
+euros = (centimos - 5);
+euros = (centimos + 5);
+euros = (centimos * 5);
+euros = (centimos / 5);
+euros = (centimos && 5);
+euros = (centimos || 5);
+euros = (centimos % 5);
+euros = !(-euros);
+euros = -(!euros);
+euros = (( int ) euros);
+euros = (( real ) euros);
+euros = (euros);
+euros = (centimos < 5);
+euros = (centimos > 5);
+euros = (centimos <= 5);
+euros = (centimos >= 5);
+euros = (centimos == 5);
+
+
+out (centimos - 5);
+out (centimos + 5);
+out (centimos * 5);
+out (centimos / 5);
+out (centimos && 5);
+out (centimos || 5);
+out (centimos % 5);
+out !(-euros);
+out -(!euros);
+out (( int ) euros);
+out (( real ) euros);
+out (euros);
+out (centimos < 5);
+out (centimos > 5);
+out (centimos <= 5);
+out (centimos >= 5);
+out (centimos == 5);
+
+@anidaciones basicas
+euros = (( int ) (2 + 5));
+euros = (( real ) (2 + 5));
+euros = ((2 - 5));
+euros = ((2 + 5) < 5);
+euros = ((2 + 5) > 5);
+euros = ((2 + 5) <= 5);
+euros = ((2 + 5) >= 5);
+euros = ((2 + 5) == 5);
+euros = (centimos - (2 + 5));
+euros = (centimos + (2 + 5));
+euros = (centimos * (2 + 5));
+euros = (centimos / (2 + 5));
+euros = (centimos && (2 + 5));
+euros = (centimos || (2 + 5));
+euros = (centimos % (2 + 5));
+euros = !(-(2 + 5));
+euros = -(!(2 + 5));
+euros = (( 2 + 5 ) - ( 3 + 2 ) * (euros));
+euros = ( 2 + 5 ) + ( 3 + 2 ) * (euros);
+euros = ( 2 + 5 ) + (( 3 + 2 ) * (euros));
 out out out 3;
+out (in euros);
+
+
+out (( int ) (2 + 5));
+out (( real ) (2 + 5));
+out ((2 - 5));
+out ((2 + 5) < 5);
+out ((2 + 5) > 5);
+out ((2 + 5) <= 5);
+out ((2 + 5) >= 5);
+out ((2 + 5) == 5);
+out (centimos - (2 + 5));
+out (centimos + (2 + 5));
+out (centimos * (2 + 5));
+out (centimos / (2 + 5));
+out (centimos && (2 + 5));
+out (centimos || (2 + 5));
+out (centimos % (2 + 5));
+out !(-(2 + 5));
+out -(!(2 + 5));
+out (( 2 + 5 ) - ( 3 + 2 ) * (euros));
+
+
 in cantidadTotal;
 out euros = 2;@esto es un comentario
 out centimos = ! euros;

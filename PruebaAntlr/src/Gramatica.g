@@ -249,7 +249,7 @@ accun[TablaSimbolos TBh] returns [String cod="";]{String op, cod1;}:
 raccun [TablaSimbolos TBh]returns [String cod="";]{String cod1, cod2;}:
 								cod1=tipo
 								DELIM_PAREN_C
-								cod2=factor[TBh]
+								cod2=acccomp[TBh]
 								{
 									cod = cod2 + "convierte_"+cod1+"()\n";
 								}

@@ -1,0 +1,5 @@
+@revisar
+
+
+out ( 2 + 5 ) + ( 3 + 2 ) * (euros);
+out ( 2 + 5 ) + (( 3 + 2 ) * (euros));
