@@ -1,0 +1,87 @@
+int euros;
+
+in euros;
+euros = euros = in euros;
+out euros = euros = euros = in euros;
+3 == (euros = 3);
+
+out euros = (euros = euros = in euros);
+out euros = (euros = euros == (in euros));
+out (3) == (3);
+3 - 5;
+euros - fanfarria;
+
+out euros - 3;
+out 3 - euros;
+out euros - euros;
+
+out euros + 3;
+out 3 + euros;
+out euros + euros;
+
+euros = euros - 3;
+euros = 3 - euros;
+euros = euros - euros;
+
+euros = euros + 3;
+euros = 3 + euros;
+euros = euros + euros;
+
+out (euros - 3);
+out (3 - euros);
+out (euros - euros);
+
+out (euros + 3);
+out (3 + euros);
+out (euros + euros);
+
+euros = (euros - 3);
+euros = (3 - euros);
+euros = (euros - euros);
+
+euros = (euros + 3);
+euros = (3 + euros);
+euros = (euros + euros);
+
+out euros - 3 + 5;
+out 3 - euros + 5;
+out euros - euros + 5;
+
+out euros + 3 +6;
+out 3 + euros + 6;
+out euros + euros + 6;
+
+euros = euros - 3 + 7;
+euros = 3 - euros + 7;
+euros = euros - euros + 7;
+
+euros = euros + 3 + 8;
+euros = 3 + euros - 8;
+euros = euros + euros + 8;
+
+out (euros - 3) - 9;
+out (3 - euros) - 9;
+out (euros - euros) + 9;
+
+out (euros + 3) == 10;
+out (3 + euros) <= 10;
+out (euros + euros) < 10;
+
+euros = 10 > (euros - 3);
+euros = 10 != (3 - euros);
+euros = 10 == (euros - euros);
+
+euros = robusto = (euros + 3);
+euros = ((((mola)))) == (3 + euros);
+euros = (cambio + a + euros) - (euros + euros);
+
+euros * esto - mola;
+euros / esto % mola;
+
+
+euros + -5;
+
+euros = ( int ) 5;
+
+
+$$
