@@ -28,7 +28,7 @@ private static FileInputStream fis = null;
 				token = scan.nextToken();
 			}*/
 			System.out.println("Scanning file...");
-			fis = new FileInputStream("codigo.txt");
+			fis = new FileInputStream("Para revisar.txt");
 			MiLexer scan = new MiLexer(fis);
 			MiParser par = new MiParser(scan);
 			par.sprog();

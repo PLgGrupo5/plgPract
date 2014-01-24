@@ -5,7 +5,7 @@ euros = euros = in euros;
 out euros = euros = euros = in euros;
 3 == (euros = 3);
 
-out euros = euros = euros = in euros;
+out euros = (euros = euros = in euros);
 out euros = (euros = euros == (in euros));
 out (3) == (3);
 3 - 5;
@@ -73,15 +73,7 @@ euros = 10 == (euros - euros);
 
 euros = robusto = (euros + 3);
 euros = ((((mola)))) == (3 + euros);
-euros = (cambio + a + euros) - (euros + euros);
-
-euros * esto - mola;
-euros / esto % mola;
-
-
-euros + -5;
-
-euros = ( int ) 5;
+euros = (cambio + a + euros) + (euros + euros);
 
 
 $$

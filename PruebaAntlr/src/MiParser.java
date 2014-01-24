@@ -61,6 +61,9 @@ public MiParser(ParserSharedInputState state) {
 		try {      // for error handling
 			cod=prog();
 			astFactory.addASTChild(currentAST, returnAST);
+			
+									System.out.println(cod);
+								
 			AST tmp1_AST = null;
 			tmp1_AST = astFactory.create(LT(1));
 			astFactory.addASTChild(currentAST, tmp1_AST);
@@ -85,11 +88,8 @@ public MiParser(ParserSharedInputState state) {
 		try {      // for error handling
 			TBS=decs();
 			astFactory.addASTChild(currentAST, returnAST);
-			{
 			cod=accs(TBS);
 			astFactory.addASTChild(currentAST, returnAST);
-			}
-			System.out.println(cod);
 			prog_AST = (AST)currentAST.root;
 		}
 		catch (RecognitionException ex) {
@@ -118,19 +118,24 @@ public MiParser(ParserSharedInputState state) {
 				TBS=rdecs();
 				astFactory.addASTChild(currentAST, returnAST);
 				
-											TBS.insertaDec(dec1);
-											TB=TBS;
-										
+										TBS.insertaDec(dec1);
+										TB=TBS;
+									
 				decs_AST = (AST)currentAST.root;
 				break;
 			}
+			case ENTERO:
+			case REAL:
 			case ID:
+			case DELIM_PAREN_A:
+			case OP_MENOS:
+			case OP_NOT:
 			case OP_IN:
 			case OP_OUT:
 			{
 					
 					  						TB= new TablaSimbolos();
-					  					
+					  				
 				decs_AST = (AST)currentAST.root;
 				break;
 			}
@@ -164,8 +169,8 @@ public MiParser(ParserSharedInputState state) {
 			cod2=racs(TBh);
 			astFactory.addASTChild(currentAST, returnAST);
 				
-												cod= cod1 + cod2 + "\n";
-											
+									cod= cod1 + cod2 + "\n";
+								
 			accs_AST = (AST)currentAST.root;
 		}
 		catch (RecognitionException ex) {
@@ -194,11 +199,11 @@ public MiParser(ParserSharedInputState state) {
 			astFactory.addASTChild(currentAST, ident_AST);
 			match(ID);
 			
-										nombreVar = ident.getText();
-										//System.out.println(nombreVar);
-										Declaracion decla = new Declaracion (nombreTipo, nombreVar);
-										deca=decla;
-									
+									nombreVar = ident.getText();
+									//System.out.println(nombreVar);
+									Declaracion decla = new Declaracion (nombreTipo, nombreVar);
+									deca=decla;
+								
 			dec_AST = (AST)currentAST.root;
 		}
 		catch (RecognitionException ex) {
@@ -321,9 +326,14 @@ public MiParser(ParserSharedInputState state) {
 				acc_AST = (AST)currentAST.root;
 				break;
 			}
+			case ENTERO:
+			case REAL:
 			case ID:
+			case DELIM_PAREN_A:
+			case OP_MENOS:
+			case OP_NOT:
 			{
-				cod=accasign(TBh);
+				cod=exp(TBh);
 				astFactory.addASTChild(currentAST, returnAST);
 				acc_AST = (AST)currentAST.root;
 				break;
@@ -336,7 +346,7 @@ public MiParser(ParserSharedInputState state) {
 		}
 		catch (RecognitionException ex) {
 			reportError(ex);
-			recover(ex,_tokenSet_3);
+			recover(ex,_tokenSet_5);
 		}
 		returnAST = acc_AST;
 		return cod;
@@ -357,12 +367,12 @@ public MiParser(ParserSharedInputState state) {
 			tmp5_AST = astFactory.create(LT(1));
 			astFactory.addASTChild(currentAST, tmp5_AST);
 			match(SEP);
-			cod1=rracs(TBh);
+			cod1=rraccs(TBh);
 			astFactory.addASTChild(currentAST, returnAST);
 				
-												desap="desapila()\n";
-												cod = desap + cod1;
-											
+									desap="desapila()\n";
+									cod = desap + cod1;
+								
 			racs_AST = (AST)currentAST.root;
 		}
 		catch (RecognitionException ex) {
@@ -373,29 +383,34 @@ public MiParser(ParserSharedInputState state) {
 		return cod;
 	}
 	
-	public final String  rracs(
+	public final String  rraccs(
 		TablaSimbolos TBh
 	) throws RecognitionException, TokenStreamException {
 		String cod="";
 		
 		returnAST = null;
 		ASTPair currentAST = new ASTPair();
-		AST rracs_AST = null;
+		AST rraccs_AST = null;
 		
 		try {      // for error handling
 			switch ( LA(1)) {
+			case ENTERO:
+			case REAL:
 			case ID:
+			case DELIM_PAREN_A:
+			case OP_MENOS:
+			case OP_NOT:
 			case OP_IN:
 			case OP_OUT:
 			{
 				cod=accs(TBh);
 				astFactory.addASTChild(currentAST, returnAST);
-				rracs_AST = (AST)currentAST.root;
+				rraccs_AST = (AST)currentAST.root;
 				break;
 			}
 			case FIN:
 			{
-				rracs_AST = (AST)currentAST.root;
+				rraccs_AST = (AST)currentAST.root;
 				break;
 			}
 			default:
@@ -408,7 +423,7 @@ public MiParser(ParserSharedInputState state) {
 			reportError(ex);
 			recover(ex,_tokenSet_1);
 		}
-		returnAST = rracs_AST;
+		returnAST = rraccs_AST;
 		return cod;
 	}
 	
@@ -434,10 +449,10 @@ public MiParser(ParserSharedInputState state) {
 			astFactory.addASTChild(currentAST, id_AST);
 			match(ID);
 			
-												linea = TBh.getLinea(id.getText().toLowerCase());
-												cod = "lectura("+linea.getDirMemoria()+")\n";
-												cod += "apilaDir("+linea.getDirMemoria()+")\n";
-											
+									linea = TBh.getLinea(id.getText().toLowerCase());
+									cod = "lectura("+linea.getDirMemoria()+")\n";
+									cod += "apilaDir("+linea.getDirMemoria()+")\n";
+								
 			in_AST = (AST)currentAST.root;
 		}
 		catch (RecognitionException ex) {
@@ -463,88 +478,56 @@ public MiParser(ParserSharedInputState state) {
 			tmp7_AST = astFactory.create(LT(1));
 			astFactory.addASTChild(currentAST, tmp7_AST);
 			match(OP_OUT);
-			cod1=rout(TBh);
+			cod1=exp(TBh);
 			astFactory.addASTChild(currentAST, returnAST);
 			
-												cod += cod1 + "escritura()\n";
-											
+									cod += cod1 + "escritura()\n";
+								
 			out_AST = (AST)currentAST.root;
-		}
-		catch (RecognitionException ex) {
-			reportError(ex);
-			recover(ex,_tokenSet_3);
-		}
-		returnAST = out_AST;
-		return cod;
-	}
-	
-	public final String  accasign(
-		TablaSimbolos TBh
-	) throws RecognitionException, TokenStreamException {
-		String cod = "";;
-		
-		returnAST = null;
-		ASTPair currentAST = new ASTPair();
-		AST accasign_AST = null;
-		Token  ident = null;
-		AST ident_AST = null;
-		String cod1;Linea linea;
-		
-		try {      // for error handling
-			ident = LT(1);
-			ident_AST = astFactory.create(ident);
-			astFactory.addASTChild(currentAST, ident_AST);
-			match(ID);
-			cod1=raccasign(TBh);
-			astFactory.addASTChild(currentAST, returnAST);
-			
-												linea=TBh.getLinea(ident.getText().toLowerCase());
-												cod=cod1+"desapilaDir("+linea.getDirMemoria()+")\n";
-												cod+="apilaDir("+linea.getDirMemoria()+")\n";
-												
-											
-			accasign_AST = (AST)currentAST.root;
 		}
 		catch (RecognitionException ex) {
 			reportError(ex);
 			recover(ex,_tokenSet_5);
 		}
-		returnAST = accasign_AST;
+		returnAST = out_AST;
 		return cod;
 	}
 	
-	public final String  rout(
+	public final String  exp(
 		TablaSimbolos TBh
 	) throws RecognitionException, TokenStreamException {
-		String cod="";;
+		String cod="";
 		
 		returnAST = null;
 		ASTPair currentAST = new ASTPair();
-		AST rout_AST = null;
+		AST exp_AST = null;
+		Token  ident = null;
+		AST ident_AST = null;
+		String cod1;Linea linea;
 		
 		try {      // for error handling
-			if ((LA(1)==ID||LA(1)==OP_IN||LA(1)==OP_OUT) && (_tokenSet_6.member(LA(2)))) {
-				cod=acc(TBh);
-				astFactory.addASTChild(currentAST, returnAST);
-				rout_AST = (AST)currentAST.root;
-			}
-			else if ((LA(1)==DELIM_PAREN_A) && (_tokenSet_7.member(LA(2)))) {
+			if ((LA(1)==ID) && (LA(2)==OP_AS)) {
+				ident = LT(1);
+				ident_AST = astFactory.create(ident);
+				astFactory.addASTChild(currentAST, ident_AST);
+				match(ID);
 				AST tmp8_AST = null;
 				tmp8_AST = astFactory.create(LT(1));
 				astFactory.addASTChild(currentAST, tmp8_AST);
-				match(DELIM_PAREN_A);
-				cod=acccomp(TBh);
+				match(OP_AS);
+				cod1=accasign(TBh);
 				astFactory.addASTChild(currentAST, returnAST);
-				AST tmp9_AST = null;
-				tmp9_AST = astFactory.create(LT(1));
-				astFactory.addASTChild(currentAST, tmp9_AST);
-				match(DELIM_PAREN_C);
-				rout_AST = (AST)currentAST.root;
+				
+										linea=TBh.getLinea(ident.getText().toLowerCase());
+										cod=cod1+"desapilaDir("+linea.getDirMemoria()+")\n";
+										cod+="apilaDir("+linea.getDirMemoria()+")\n";
+									
+				exp_AST = (AST)currentAST.root;
 			}
-			else if ((_tokenSet_7.member(LA(1))) && (_tokenSet_8.member(LA(2)))) {
+			else if ((_tokenSet_6.member(LA(1))) && (_tokenSet_7.member(LA(2)))) {
 				cod=acccomp(TBh);
 				astFactory.addASTChild(currentAST, returnAST);
-				rout_AST = (AST)currentAST.root;
+				exp_AST = (AST)currentAST.root;
 			}
 			else {
 				throw new NoViableAltException(LT(1), getFilename());
@@ -553,9 +536,31 @@ public MiParser(ParserSharedInputState state) {
 		}
 		catch (RecognitionException ex) {
 			reportError(ex);
-			recover(ex,_tokenSet_3);
+			recover(ex,_tokenSet_5);
 		}
-		returnAST = rout_AST;
+		returnAST = exp_AST;
+		return cod;
+	}
+	
+	public final String  accasign(
+		TablaSimbolos TBh
+	) throws RecognitionException, TokenStreamException {
+		String cod="";
+		
+		returnAST = null;
+		ASTPair currentAST = new ASTPair();
+		AST accasign_AST = null;
+		
+		try {      // for error handling
+			cod=exp(TBh);
+			astFactory.addASTChild(currentAST, returnAST);
+			accasign_AST = (AST)currentAST.root;
+		}
+		catch (RecognitionException ex) {
+			reportError(ex);
+			recover(ex,_tokenSet_5);
+		}
+		returnAST = accasign_AST;
 		return cod;
 	}
 	
@@ -578,79 +583,9 @@ public MiParser(ParserSharedInputState state) {
 		}
 		catch (RecognitionException ex) {
 			reportError(ex);
-			recover(ex,_tokenSet_9);
+			recover(ex,_tokenSet_5);
 		}
 		returnAST = acccomp_AST;
-		return cod;
-	}
-	
-	public final String  raccasign(
-		TablaSimbolos TBh
-	) throws RecognitionException, TokenStreamException {
-		String cod="";;
-		
-		returnAST = null;
-		ASTPair currentAST = new ASTPair();
-		AST raccasign_AST = null;
-		
-		try {      // for error handling
-			AST tmp10_AST = null;
-			tmp10_AST = astFactory.create(LT(1));
-			astFactory.addASTChild(currentAST, tmp10_AST);
-			match(OP_AS);
-			cod=value(TBh);
-			astFactory.addASTChild(currentAST, returnAST);
-			raccasign_AST = (AST)currentAST.root;
-		}
-		catch (RecognitionException ex) {
-			reportError(ex);
-			recover(ex,_tokenSet_5);
-		}
-		returnAST = raccasign_AST;
-		return cod;
-	}
-	
-	public final String  value(
-		TablaSimbolos TBh
-	) throws RecognitionException, TokenStreamException {
-		String cod = "";;
-		
-		returnAST = null;
-		ASTPair currentAST = new ASTPair();
-		AST value_AST = null;
-		
-		try {      // for error handling
-			switch ( LA(1)) {
-			case OP_AS:
-			{
-				cod=raccasign(TBh);
-				astFactory.addASTChild(currentAST, returnAST);
-				value_AST = (AST)currentAST.root;
-				break;
-			}
-			case ENTERO:
-			case REAL:
-			case ID:
-			case DELIM_PAREN_A:
-			case OP_MENOS:
-			case OP_NOT:
-			{
-				cod=acccomp(TBh);
-				astFactory.addASTChild(currentAST, returnAST);
-				value_AST = (AST)currentAST.root;
-				break;
-			}
-			default:
-			{
-				throw new NoViableAltException(LT(1), getFilename());
-			}
-			}
-		}
-		catch (RecognitionException ex) {
-			reportError(ex);
-			recover(ex,_tokenSet_5);
-		}
-		returnAST = value_AST;
 		return cod;
 	}
 	
@@ -673,7 +608,7 @@ public MiParser(ParserSharedInputState state) {
 		}
 		catch (RecognitionException ex) {
 			reportError(ex);
-			recover(ex,_tokenSet_9);
+			recover(ex,_tokenSet_8);
 		}
 		returnAST = accadit_AST;
 		return cod;
@@ -698,7 +633,12 @@ public MiParser(ParserSharedInputState state) {
 		String op,cod1;
 		
 		try {      // for error handling
-			if ((_tokenSet_10.member(LA(1))) && (_tokenSet_7.member(LA(2)))) {
+			switch ( LA(1)) {
+			case OP_IGUAL:
+			case OP_COMP:
+			case OP_COMP1:
+			case OP_COMP2:
+			{
 				{
 				switch ( LA(1)) {
 				case OP_COMP:
@@ -742,43 +682,47 @@ public MiParser(ParserSharedInputState state) {
 				cod1=accadit(TBh);
 				astFactory.addASTChild(currentAST, returnAST);
 				
-													op="";
-													if (opi!=null)
-														op="igual()\n";
-													else if (opc!=null)
-													{
-														op="distinto()\n";
-													}
-													else if (opc1!=null)
-															{
-																if (opc1.getText()=="<=")
-																	op="menor_o_igual()\n";
-																else
-																	op="mayor_o_igual()\n";
-															}else if (opc2!=null)
-															{
-																if (opc2.getText()=="<")
-																	op="menor_que()\n";
-																else
-																	op="mayor_que()\n";
-															}
-													cod=codh+cod1+op;
-													;
-												
+										op="";
+										if (opi!=null)
+											op="igual()\n";
+										else if (opc!=null)
+										{
+											op="distinto()\n";
+										}
+										else if (opc1!=null)
+												{
+													if (opc1.getText()=="<=")
+														op="menor_o_igual()\n";
+													else
+														op="mayor_o_igual()\n";
+												}else if (opc2!=null)
+												{
+													if (opc2.getText()=="<")
+														op="menor_que()\n";
+													else
+														op="mayor_que()\n";
+												}
+										cod=codh+cod1+op;
+									
 				racccomp_AST = (AST)currentAST.root;
+				break;
 			}
-			else if ((_tokenSet_9.member(LA(1))) && (_tokenSet_11.member(LA(2)))) {
+			case DELIM_PAREN_C:
+			case SEP:
+			{
 				cod=codh;
 				racccomp_AST = (AST)currentAST.root;
+				break;
 			}
-			else {
+			default:
+			{
 				throw new NoViableAltException(LT(1), getFilename());
 			}
-			
+			}
 		}
 		catch (RecognitionException ex) {
 			reportError(ex);
-			recover(ex,_tokenSet_9);
+			recover(ex,_tokenSet_5);
 		}
 		returnAST = racccomp_AST;
 		return cod;
@@ -787,7 +731,7 @@ public MiParser(ParserSharedInputState state) {
 	public final String  accmult(
 		TablaSimbolos TBh
 	) throws RecognitionException, TokenStreamException {
-		String cod="";;
+		String cod="";
 		
 		returnAST = null;
 		ASTPair currentAST = new ASTPair();
@@ -826,7 +770,11 @@ public MiParser(ParserSharedInputState state) {
 		String cod1,cod2,op;
 		
 		try {      // for error handling
-			if ((LA(1)==OP_MAS||LA(1)==OP_MENOS||LA(1)==OP_OR) && (_tokenSet_7.member(LA(2)))) {
+			switch ( LA(1)) {
+			case OP_MAS:
+			case OP_MENOS:
+			case OP_OR:
+			{
 				{
 				switch ( LA(1)) {
 				case OP_MAS:
@@ -862,31 +810,39 @@ public MiParser(ParserSharedInputState state) {
 				cod1=accmult(TBh);
 				astFactory.addASTChild(currentAST, returnAST);
 				
-													op="";
-													if (opma!=null)
-														op="suma()\n";
-													if (opme!=null)
-														op="resta()\n";
-													if (opor!=null)
-														op="or()\n";
-													cod2=codh+cod1+op;
-												
+										op="";
+										if (opma!=null)
+											op="suma()\n";
+										if (opme!=null)
+											op="resta()\n";
+										if (opor!=null)
+											op="or()\n";
+										cod2=codh+cod1+op;
+									
 				cod=raccadit(TBh,cod2);
 				astFactory.addASTChild(currentAST, returnAST);
 				raccadit_AST = (AST)currentAST.root;
+				break;
 			}
-			else if ((_tokenSet_9.member(LA(1))) && (_tokenSet_11.member(LA(2)))) {
-				cod =codh;
+			case DELIM_PAREN_C:
+			case OP_IGUAL:
+			case OP_COMP:
+			case SEP:
+			case OP_COMP1:
+			case OP_COMP2:
+			{
 				raccadit_AST = (AST)currentAST.root;
+				break;
 			}
-			else {
+			default:
+			{
 				throw new NoViableAltException(LT(1), getFilename());
 			}
-			
+			}
 		}
 		catch (RecognitionException ex) {
 			reportError(ex);
-			recover(ex,_tokenSet_9);
+			recover(ex,_tokenSet_8);
 		}
 		returnAST = raccadit_AST;
 		return cod;
@@ -904,22 +860,15 @@ public MiParser(ParserSharedInputState state) {
 		AST opme_AST = null;
 		Token  opno = null;
 		AST opno_AST = null;
-		String op, cod1;
+		String op, cod1,cod2;
 		
 		try {      // for error handling
-			switch ( LA(1)) {
-			case ENTERO:
-			case REAL:
-			case ID:
-			{
+			if ((_tokenSet_10.member(LA(1))) && (_tokenSet_11.member(LA(2)))) {
 				cod=factor(TBh);
 				astFactory.addASTChild(currentAST, returnAST);
 				accun_AST = (AST)currentAST.root;
-				break;
 			}
-			case OP_MENOS:
-			case OP_NOT:
-			{
+			else if ((LA(1)==OP_MENOS||LA(1)==OP_NOT)) {
 				{
 				switch ( LA(1)) {
 				case OP_MENOS:
@@ -944,46 +893,51 @@ public MiParser(ParserSharedInputState state) {
 				}
 				}
 				}
-				cod1=accun(TBh);
+				cod1=factor(TBh);
 				astFactory.addASTChild(currentAST, returnAST);
 				
-										 			op="";
-										 			if (opme!=null)
-										 				op="invierte()\n";
-										 			else if (opno!=null)
-										 				op="not()\n";
-										 			cod=cod1 + op;
-										 		
+										 op="";
+										 if (opme!=null)
+										 	op="invierte()\n";
+										 else if (opno!=null)
+										 	op="not()\n";
+										 cod=cod1 + op;
+									
 				accun_AST = (AST)currentAST.root;
-				break;
 			}
-			case DELIM_PAREN_A:
-			{
-				AST tmp11_AST = null;
-				tmp11_AST = astFactory.create(LT(1));
-				astFactory.addASTChild(currentAST, tmp11_AST);
+			else if ((LA(1)==DELIM_PAREN_A) && (LA(2)==TIPOREAL||LA(2)==TIPOENT)) {
+				AST tmp9_AST = null;
+				tmp9_AST = astFactory.create(LT(1));
+				astFactory.addASTChild(currentAST, tmp9_AST);
 				match(DELIM_PAREN_A);
-				cod=raccun(TBh);
+				cod1=tipo();
 				astFactory.addASTChild(currentAST, returnAST);
+				AST tmp10_AST = null;
+				tmp10_AST = astFactory.create(LT(1));
+				astFactory.addASTChild(currentAST, tmp10_AST);
+				match(DELIM_PAREN_C);
+				cod2=factor(TBh);
+				astFactory.addASTChild(currentAST, returnAST);
+				
+										cod = cod2 + "convierte_"+cod1+"()\n";
+									
 				accun_AST = (AST)currentAST.root;
-				break;
 			}
-			default:
-			{
+			else {
 				throw new NoViableAltException(LT(1), getFilename());
 			}
-			}
+			
 		}
 		catch (RecognitionException ex) {
 			reportError(ex);
-			recover(ex,_tokenSet_9);
+			recover(ex,_tokenSet_12);
 		}
 		returnAST = accun_AST;
 		return cod;
 	}
 	
 	public final String  raccmult(
-		TablaSimbolos TBh, String codh
+		TablaSimbolos TBh,String codh
 	) throws RecognitionException, TokenStreamException {
 		String cod="";;
 		
@@ -999,7 +953,11 @@ public MiParser(ParserSharedInputState state) {
 		String cod1,cod2,op;
 		
 		try {      // for error handling
-			if ((LA(1)==OP_MOD||LA(1)==OP_MUL_DIV||LA(1)==OP_AND) && (_tokenSet_7.member(LA(2)))) {
+			switch ( LA(1)) {
+			case OP_MOD:
+			case OP_MUL_DIV:
+			case OP_AND:
+			{
 				{
 				switch ( LA(1)) {
 				case OP_MUL_DIV:
@@ -1035,30 +993,42 @@ public MiParser(ParserSharedInputState state) {
 				cod1=accun(TBh);
 				astFactory.addASTChild(currentAST, returnAST);
 				
-													op="";
-													if (opmu!=null)
-														if (opmu.getText()=="*")
-															op="multiplicacion()\n";
-														else
-															op="division()\n";
-													if (opan!=null)
-														op="and()\n";
-													if (opmo!=null)
-														op="modulo()\n";
-													cod2=codh+cod1+op;
-												
+										op="";
+										if (opmu!=null)
+											if (opmu.getText()=="*")
+												op="multiplicacion()\n";
+											else
+												op="division()\n";
+										if (opan!=null)
+											op="and()\n";
+										if (opmo!=null)
+											op="modulo()\n";
+										cod2=codh+cod1+op;
+									
 				cod=raccmult(TBh,cod2);
 				astFactory.addASTChild(currentAST, returnAST);
 				raccmult_AST = (AST)currentAST.root;
+				break;
 			}
-			else if ((_tokenSet_9.member(LA(1))) && (_tokenSet_11.member(LA(2)))) {
+			case DELIM_PAREN_C:
+			case OP_IGUAL:
+			case OP_MAS:
+			case OP_MENOS:
+			case OP_OR:
+			case OP_COMP:
+			case SEP:
+			case OP_COMP1:
+			case OP_COMP2:
+			{
 				cod=codh;
 				raccmult_AST = (AST)currentAST.root;
+				break;
 			}
-			else {
+			default:
+			{
 				throw new NoViableAltException(LT(1), getFilename());
 			}
-			
+			}
 		}
 		catch (RecognitionException ex) {
 			reportError(ex);
@@ -1082,19 +1052,6 @@ public MiParser(ParserSharedInputState state) {
 		
 		try {      // for error handling
 			switch ( LA(1)) {
-			case ID:
-			{
-				iden = LT(1);
-				iden_AST = astFactory.create(iden);
-				astFactory.addASTChild(currentAST, iden_AST);
-				match(ID);
-				
-													linea=TBh.getLinea(iden.getText().toLowerCase());
-													cod= "apilaDir("+linea.getDirMemoria()+")\n";
-												
-				factor_AST = (AST)currentAST.root;
-				break;
-			}
 			case ENTERO:
 			case REAL:
 			{
@@ -1103,89 +1060,45 @@ public MiParser(ParserSharedInputState state) {
 				factor_AST = (AST)currentAST.root;
 				break;
 			}
-			default:
+			case ID:
 			{
-				throw new NoViableAltException(LT(1), getFilename());
+				iden = LT(1);
+				iden_AST = astFactory.create(iden);
+				astFactory.addASTChild(currentAST, iden_AST);
+				match(ID);
+				
+										linea=TBh.getLinea(iden.getText().toLowerCase());
+										cod= "apilaDir("+linea.getDirMemoria()+")\n";
+									
+				factor_AST = (AST)currentAST.root;
+				break;
 			}
-			}
-		}
-		catch (RecognitionException ex) {
-			reportError(ex);
-			recover(ex,_tokenSet_9);
-		}
-		returnAST = factor_AST;
-		return cod;
-	}
-	
-	public final String  raccun(
-		TablaSimbolos TBh
-	) throws RecognitionException, TokenStreamException {
-		String cod="";;
-		
-		returnAST = null;
-		ASTPair currentAST = new ASTPair();
-		AST raccun_AST = null;
-		String cod1, cod2;
-		
-		try {      // for error handling
-			switch ( LA(1)) {
-			case TIPOREAL:
-			case TIPOENT:
+			case DELIM_PAREN_A:
 			{
-				cod1=tipo();
+				AST tmp11_AST = null;
+				tmp11_AST = astFactory.create(LT(1));
+				astFactory.addASTChild(currentAST, tmp11_AST);
+				match(DELIM_PAREN_A);
+				cod=acc(TBh);
 				astFactory.addASTChild(currentAST, returnAST);
 				AST tmp12_AST = null;
 				tmp12_AST = astFactory.create(LT(1));
 				astFactory.addASTChild(currentAST, tmp12_AST);
 				match(DELIM_PAREN_C);
-				cod2=acccomp(TBh);
-				astFactory.addASTChild(currentAST, returnAST);
-				
-													cod = cod2 + "convierte_"+cod1+"()\n";
-												
-				raccun_AST = (AST)currentAST.root;
-				break;
-			}
-			case OP_IN:
-			{
-				cod=in(TBh);
-				astFactory.addASTChild(currentAST, returnAST);
-				AST tmp13_AST = null;
-				tmp13_AST = astFactory.create(LT(1));
-				astFactory.addASTChild(currentAST, tmp13_AST);
-				match(DELIM_PAREN_C);
-				raccun_AST = (AST)currentAST.root;
+				factor_AST = (AST)currentAST.root;
 				break;
 			}
 			default:
-				if ((_tokenSet_7.member(LA(1))) && (_tokenSet_12.member(LA(2)))) {
-					cod=acccomp(TBh);
-					astFactory.addASTChild(currentAST, returnAST);
-					AST tmp14_AST = null;
-					tmp14_AST = astFactory.create(LT(1));
-					astFactory.addASTChild(currentAST, tmp14_AST);
-					match(DELIM_PAREN_C);
-					raccun_AST = (AST)currentAST.root;
-				}
-				else if ((LA(1)==ID) && (LA(2)==OP_AS)) {
-					cod=accasign(TBh);
-					astFactory.addASTChild(currentAST, returnAST);
-					AST tmp15_AST = null;
-					tmp15_AST = astFactory.create(LT(1));
-					astFactory.addASTChild(currentAST, tmp15_AST);
-					match(DELIM_PAREN_C);
-					raccun_AST = (AST)currentAST.root;
-				}
-			else {
+			{
 				throw new NoViableAltException(LT(1), getFilename());
 			}
 			}
 		}
 		catch (RecognitionException ex) {
 			reportError(ex);
-			recover(ex,_tokenSet_9);
+			recover(ex,_tokenSet_12);
 		}
-		returnAST = raccun_AST;
+		returnAST = factor_AST;
 		return cod;
 	}
 	
@@ -1209,8 +1122,8 @@ public MiParser(ParserSharedInputState state) {
 				astFactory.addASTChild(currentAST, r_AST);
 				match(REAL);
 				
-													cod="apila("+r.getText()+")\n";
-												
+										cod="apila("+r.getText()+")\n";
+									
 				num_AST = (AST)currentAST.root;
 				break;
 			}
@@ -1221,8 +1134,8 @@ public MiParser(ParserSharedInputState state) {
 				astFactory.addASTChild(currentAST, e_AST);
 				match(ENTERO);
 				
-													cod="apila("+e.getText()+")\n";
-												
+										cod="apila("+e.getText()+")\n";
+									
 				num_AST = (AST)currentAST.root;
 				break;
 			}
@@ -1234,7 +1147,7 @@ public MiParser(ParserSharedInputState state) {
 		}
 		catch (RecognitionException ex) {
 			reportError(ex);
-			recover(ex,_tokenSet_9);
+			recover(ex,_tokenSet_12);
 		}
 		returnAST = num_AST;
 		return cod;
@@ -1278,6 +1191,7 @@ public MiParser(ParserSharedInputState state) {
 		"LETRA",
 		"DIGITO",
 		"DELIM_PUNTO",
+		"SALTODELINEA",
 		"ID_TIPO_OPIN_OPOUT",
 		"COMENTARIO"
 	};
@@ -1297,7 +1211,7 @@ public MiParser(ParserSharedInputState state) {
 	}
 	public static final BitSet _tokenSet_1 = new BitSet(mk_tokenSet_1());
 	private static final long[] mk_tokenSet_2() {
-		long[] data = { 6291520L, 0L};
+		long[] data = { 6832752L, 0L};
 		return data;
 	}
 	public static final BitSet _tokenSet_2 = new BitSet(mk_tokenSet_2());
@@ -1317,37 +1231,37 @@ public MiParser(ParserSharedInputState state) {
 	}
 	public static final BitSet _tokenSet_5 = new BitSet(mk_tokenSet_5());
 	private static final long[] mk_tokenSet_6() {
-		long[] data = { 6836848L, 0L};
+		long[] data = { 541296L, 0L};
 		return data;
 	}
 	public static final BitSet _tokenSet_6 = new BitSet(mk_tokenSet_6());
 	private static final long[] mk_tokenSet_7() {
-		long[] data = { 541296L, 0L};
+		long[] data = { 8329883248L, 0L};
 		return data;
 	}
 	public static final BitSet _tokenSet_7 = new BitSet(mk_tokenSet_7());
 	private static final long[] mk_tokenSet_8() {
-		long[] data = { 8325687920L, 0L};
+		long[] data = { 1880099840L, 0L};
 		return data;
 	}
 	public static final BitSet _tokenSet_8 = new BitSet(mk_tokenSet_8());
 	private static final long[] mk_tokenSet_9() {
-		long[] data = { 1880615936L, 0L};
+		long[] data = { 1880255488L, 0L};
 		return data;
 	}
 	public static final BitSet _tokenSet_9 = new BitSet(mk_tokenSet_9());
 	private static final long[] mk_tokenSet_10() {
-		long[] data = { 1611663360L, 0L};
+		long[] data = { 624L, 0L};
 		return data;
 	}
 	public static final BitSet _tokenSet_10 = new BitSet(mk_tokenSet_10());
 	private static final long[] mk_tokenSet_11() {
-		long[] data = { 1895820912L, 0L};
+		long[] data = { 1887432304L, 0L};
 		return data;
 	}
 	public static final BitSet _tokenSet_11 = new BitSet(mk_tokenSet_11());
 	private static final long[] mk_tokenSet_12() {
-		long[] data = { 8057253488L, 0L};
+		long[] data = { 1880615936L, 0L};
 		return data;
 	}
 	public static final BitSet _tokenSet_12 = new BitSet(mk_tokenSet_12());

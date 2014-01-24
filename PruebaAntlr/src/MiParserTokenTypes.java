@@ -35,6 +35,7 @@ public interface MiParserTokenTypes {
 	int LETRA = 33;
 	int DIGITO = 34;
 	int DELIM_PUNTO = 35;
-	int ID_TIPO_OPIN_OPOUT = 36;
-	int COMENTARIO = 37;
+	int SALTODELINEA = 36;
+	int ID_TIPO_OPIN_OPOUT = 37;
+	int COMENTARIO = 38;
 }
