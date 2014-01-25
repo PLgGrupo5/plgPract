@@ -831,6 +831,7 @@ public MiParser(ParserSharedInputState state) {
 			case OP_COMP1:
 			case OP_COMP2:
 			{
+				cod=codh;
 				raccadit_AST = (AST)currentAST.root;
 				break;
 			}

@@ -202,7 +202,7 @@ raccadit[TablaSimbolos TBh, String codh]returns [String cod=""]{String cod1,cod2
 						cod2=codh+cod1+op;
 					}
 					cod=raccadit[TBh,cod2]
-					|
+					|{cod=codh;}
 					;
 
 accmult[TablaSimbolos TBh]returns [String cod=""]{String cod1;}:
