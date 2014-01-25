@@ -44,8 +44,7 @@ rdecs :	SEP rrdecs	;
 rrdecs:decs	;
 
 dec:tipo ID	;
-
-
+// Hay otra forma mas simple de escribirlo. Asi es dificil de entender (rdecs , rrdecs).
 
 
 //====================================================
@@ -53,28 +52,26 @@ dec:tipo ID	;
 //====================================================
 
 accs:acc racs;
-
 racs: SEP rraccs ;
-
-
 rraccs: accs
 	|
 	;
+// Hay otra forma mas simple de escribirlo. Asi es dificil de entender (rdecs , rrdecs).
 
 acc : in 
 	 |out
      |exp
      ;
 
-out: OP_OUT exp;
+out: OP_OUT exp; // Aqui hay una recursion que no mola nada. Aunque no veamos que falle, es indeterminista.
 in : OP_IN id:ID;
 
 exp:ID OP_AS accasign
 		|acccomp;
 
-accasign: acc;
-acccomp: accadit racccomp;
+accasign: acc; //NO RESPETA PRIORIDADES
 
+acccomp: accadit racccomp;
 racccomp: (OP_COMP|OP_IGUAL|OP_COMP1|OP_COMP2) accadit 
 			| 
 			;
