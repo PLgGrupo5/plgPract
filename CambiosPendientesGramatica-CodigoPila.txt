@@ -1,0 +1,13 @@
+Observaciones:
+    - lectura() no lleva argumento y en el código máquina que se generó de ejemplo tiene argumento. Es una operacion de lectura por consola (similar a out)
+    - Parece que no asignáis las direcciones de memoria en ningún sitio (el atributo direccion de los tokens).
+    - ¿Realmente es necesaria la clase Declaracion?
+    - En el codigo máquina que se generó de ejemplo no aparecen operaciones apila(num)
+    - Creo que el unico lugar donde es necesario el desapila() es en el caso de que la ultima instruccion a ejecutar sea un "out" (escritura en consola). En el resto de casos el desapila no es necesario.
+
+Cambios:
+    - apila(num) -> apila_entrada(num)
+    - desapila() -> desapila_entrada()
+    - apilaDir(num) -> apila_dir(num)
+    - desapilaDir(num) -> desapila_dir(num)
+    - Cuando vayais a asignar las direcciones de memoria a los tokens identificador, comenzad a contar las direcciones de memoria en '1' en vez de en '0'. Nos facilita las cosas a la hora de plasmar la informacion en la GUI.
