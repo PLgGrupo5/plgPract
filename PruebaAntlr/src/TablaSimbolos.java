@@ -9,7 +9,10 @@ public class TablaSimbolos {
 	}
 	public Linea getLinea(String key)
 	{
-		Linea linea = this.tabla.get(key);
+		Linea linea;	
+		if (this.tabla.containsKey(key))
+			linea = this.tabla.get(key);
+		else linea=null;
 		return linea;
 	}
 	public String getTipo(String id)

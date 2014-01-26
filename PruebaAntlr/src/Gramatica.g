@@ -508,7 +508,9 @@ tipo returns [Traductor tipo=null]:
 
 class MiLexer extends Lexer; options {k=2;}
 //------------------------- Analizador Lexico ------------------------ 
-
+{
+	String erroresLexicos="";
+}
 protected LETRA :('a'..'z') | ('A'..'Z');
 protected DIGITO: '0'..'9';
 protected DELIM_PUNTO : '.';
@@ -541,10 +543,7 @@ SALTODELINEA:('\n'|'\r'| "\r\n")
 				newline();
 			}
 			;
-/*COMP1_2: (OP_COMP1 '=')=> OP_COMP2 {$setType(OP_COMP2);}
-		|(OP_COMP1) => OP_COMP1 {$setType(OP_COMP1);}
-		;
-*/
+
 COMP1: (OP_MAYQ '=')=> OP_MAYOI {$setType(OP_MAYOI);}
                |(OP_MAYQ) => OP_MAYQ {$setType(OP_MAYQ);}
                ;
@@ -606,3 +605,6 @@ NOT_COMP: (OP_NOT ('='))=> OP_COMP {$setType(OP_COMP);}
 		  ;
 
 FIN : "$$";
+
+ERRORES: . {erroresLexicos += "Hemos encontrado un error lexico: " + getText()+ " Linea: " + getLine()+ " Columna: " + getColumn() +"\n";
+			$setType(Token.SKIP);};

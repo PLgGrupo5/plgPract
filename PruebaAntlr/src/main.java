@@ -20,7 +20,7 @@ private static FileInputStream fis = null;
 		{
 			/*System.out.println("Scanning file...");
 			System.out.println(new File(".").getAbsolutePath());
-			fis = new FileInputStream("codigo.txt");
+			fis = new FileInputStream("Para revisar.txt");
 			MiLexer scan = new MiLexer(fis);
 			Token token = scan.nextToken();
 			while(token.getType() != Token.EOF_TYPE){
@@ -32,11 +32,16 @@ private static FileInputStream fis = null;
 			MiLexer scan = new MiLexer(fis);
 			MiParser par = new MiParser(scan);
 			par.sprog();
+			System.out.println(scan.erroresLexicos);
 			CommonAST a = (CommonAST)par.getAST();
 			System.out.println("Resultado ASA: "+a.toStringList());
 		}catch (ANTLRException ae){
 			System.err.println(ae.getMessage() + "y aqui intervenimos");
-		}catch(FileNotFoundException fnfe){
+		}catch (NullPointerException ae){
+			System.err.println(ae.getMessage());
+			System.err.println(ae.getMessage());
+		}
+		catch(FileNotFoundException fnfe){
 			System.err.println("No se encontró el fichero");
 		}
 	}
