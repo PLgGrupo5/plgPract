@@ -29,17 +29,23 @@ NOT_COMP;
 }
 
 
-sprog {Traductor cod;}:
+sprog  returns [Traductor cod=null;]/*{Traductor cod;}*/:
 					cod=prog
 					{
 						System.out.println(cod.getCod());
 						System.out.println(cod.getErr());
 					}
 					FIN
+					
+				
 					;
 prog returns [Traductor cod=null;]{TablaSimbolos TBS;}:
 					TBS=decs
 					cod=accs[TBS]
+					
+		
+				
+					
 					;
 
 //====================================================
@@ -54,19 +60,23 @@ decs returns [TablaSimbolos TB = new TablaSimbolos();]
 						TBS.insertaDec(dec1);
 						TB=TBS;
 					}
+					
 					|
 					{	
 	  						TB= new TablaSimbolos();
 	  				}
-					;
+					
+        			;
 	 					
 rdecs returns [TablaSimbolos TBS = new TablaSimbolos();]:
 					SEP
 					TBS=rrdecs
-					;
+					
+        			;
 rrdecs returns [TablaSimbolos TBS = new TablaSimbolos();]:
 					TBS=decs
-					;
+					
+        			;
 
 dec returns [Declaracion deca = new Declaracion();]{Traductor nombreTipo; String nombreVar;}:
 					nombreTipo=tipo
@@ -77,7 +87,8 @@ dec returns [Declaracion deca = new Declaracion();]{Traductor nombreTipo; String
 						Declaracion decla = new Declaracion (nombreTipo.getTipo(), nombreVar);
 						deca=decla;
 					}
-					;
+				
+        			;
 
 
 
@@ -88,42 +99,47 @@ dec returns [Declaracion deca = new Declaracion();]{Traductor nombreTipo; String
 
 accs [TablaSimbolos TBh] returns [Traductor cod=null]{Traductor cod1, cod2;}:
 					cod1=acc[TBh]
-					cod2=racs[TBh]
+					cod2=racs[TBh] 
+					
+					
+					
 					{	
-						if (cod2!=null)
-						{
-							cod=cod1.clone();
-							cod.setCod(cod.getCod() + cod2.getCod() + "\n");
-							cod.setErr(cod.getErr()+cod2.getErr());
-						}
-						else cod=cod1;
-												//{if(cod!=null)System.out.println(cod.getCod());}
+						cod=cod1.clone();
+						cod.setCod(cod.getCod() + cod2.getCod() + "\n");
+						cod.setErr(cod.getErr()+cod2.getErr());
+											
 					}
-					;
+				
+					
+					
+					
+        			;
 
 racs [TablaSimbolos TBh] returns [Traductor cod = null] {Traductor cod1; String desap;}:
 					SEP
-					cod1=rraccs[TBh]
+					cod =rraccs[TBh]
 					{	
-						if (cod1!=null)
-						{
-							cod=cod1.clone();
-							desap="desapila()\n";
-							cod.setCod( desap + cod1.getCod());
-						}
+						desap="desapila()\n";
+						cod.setCod( desap + cod.getCod());
 					}
-					;
+				
+					
+				
+        			;
 
 
 rraccs [TablaSimbolos TBh]returns [Traductor cod=null]:
 					cod=accs[TBh]
-					|
-					;
+					
+					|{cod=new Traductor();}
+				
+        			;
 
 acc [TablaSimbolos TBh] returns [Traductor cod=null] :
 					cod=in[TBh] 
 	 				|cod=out[TBh]
      				|cod=exp[TBh]
+     				
      				;
 
 
@@ -132,24 +148,29 @@ in [TablaSimbolos TBh] returns [Traductor cod = null]{Linea linea;}:
 					id:ID
 					{
 									cod=new Traductor();
-									linea = TBh.getLinea(id.getText().toLowerCase());
-									cod.setCod("lectura("+linea.getDirMemoria()+")\n");
 									if(!TBh.isID(id.getText()))
 									{
 										cod.setErr(cod.getErr()+"ERROR Lin: "+id.getLine()+", Col: "+id.getColumn()+"--Identificador desconocido\n");
 										cod.setTipo("error");
 									}
-									cod.setCod(cod.getCod()+"apilaDir("+linea.getDirMemoria()+")\n");
-									
+									else
+									{
+										linea = TBh.getLinea(id.getText().toLowerCase());
+										cod.setCod("lectura("+linea.getDirMemoria()+")\n");
+										cod.setCod(cod.getCod()+"desapilaDir("+linea.getDirMemoria()+")\n");
+										cod.setCod(cod.getCod()+"apilaDir("+linea.getDirMemoria()+")\n");
+									}	
 								}
-					;
+					
+        			;
 out[TablaSimbolos TBh]returns [Traductor cod = null]{Traductor cod1;}:
 					OP_OUT
-					cod1=exp[TBh]
+					cod=exp[TBh]
 					{
-						cod=cod1.clone();
-						cod.setCod(cod.getCod()+ cod1.getCod() + "escritura\n");
+						//cod=cod1.clone();
+						cod.setCod(cod.getCod() + "escritura\n");
 					}
+					
 					;
 
 
@@ -189,6 +210,9 @@ exp[TablaSimbolos TBh] returns [Traductor cod=null]{Traductor cod1;Linea linea=n
 								//cod.setCod(cod1.getCod()+"desapilaDir("+direccion+")\n");//antigua
 								cod.setCod(cod.getCod()+"desapilaDir("+direccion+")\n");//nueva
 								cod.setCod(cod.getCod()+"apilaDir("+direccion+")\n");
+								
+
+								
 								cod.setTipo(TBh.tipoResultante(tipoLinea,cod1.getTipo(),2,"="));
 									
 								if(cod.getTipo()=="error")
@@ -197,29 +221,27 @@ exp[TablaSimbolos TBh] returns [Traductor cod=null]{Traductor cod1;Linea linea=n
 						}
 						
 					}
-					
-					
-					
-					
-					/*{
-						linea=TBh.getLinea(ident.getText().toLowerCase());
-						cod=cod1+"desapilaDir("+linea.getDirMemoria()+")\n";
-						cod+="apilaDir("+linea.getDirMemoria()+")\n";
-					}*/
+
 					|cod=acccomp[TBh]
-					;
+
+        			;
 
 accasign [TablaSimbolos TBh]returns [Traductor cod=null]:
 					cod=exp[TBh]
-					;
+		
+        			;
 
 acccomp[TablaSimbolos TBh]returns [Traductor cod=null;]{Traductor cod1;}:
 					cod1=accadit[TBh]
 					cod=racccomp[TBh,cod1]
-					;
+		
+        			;
 
 racccomp[TablaSimbolos TBh, Traductor codh] returns [Traductor cod=null;]{String op,oper=">";Traductor cod1;int linea=0,columna=0;}:
-					(opc:OP_COMP|opi:OP_IGUAL|opc1:OP_COMP1|opc2:OP_COMP2)
+				/*	(opc:OP_COMP|opi:OP_IGUAL|opc1:OP_COMP1|opc2:OP_COMP2)*/
+				(opc:OP_COMP|opi:OP_IGUAL|opmayq:OP_MAYQ|opmenq:OP_MENQ|opmayoi:OP_MAYOI|opmenoi:OP_MENOI)
+					
+					
 					cod1=accadit[TBh]
 					{
 						op="";
@@ -229,35 +251,44 @@ racccomp[TablaSimbolos TBh, Traductor codh] returns [Traductor cod=null;]{String
 							linea=opi.getLine();
 							columna=opi.getColumn();
 						}	
-						else if (opc!=null)
+						if (opc!=null)
 						{
 							op="distinto()\n";
 							linea=opc.getLine();
 							columna=opc.getColumn();
 						}
-						else if (opc1!=null)
-								{
-									
-									if (opc1.getText()=="<=")
-										op="menor_o_igual()\n";
-									else
-										op="mayor_o_igual()\n";
-									linea=opc1.getLine();
-									columna=opc1.getColumn();	
-								}else if (opc2!=null)
-								{
-									if (opc2.getText()=="<")
-										op="menor_que()\n";
-									else
-										op="mayor_que()\n";
-									linea=opc2.getLine();
-									columna=opc2.getColumn();	
-								}
+						if (opmayq!=null)
+						{
+							op="mayor_que()\n";
+							linea=opmayq.getLine();
+							columna=opmayq.getColumn();
+						}
+						if(opmenq!=null)
+						{
+							op="menor_que()\n";
+							linea=opmenq.getLine();
+							columna=opmenq.getColumn();
+						}
+						if(opmayoi!=null)
+						{
+							op="mayor_o_igual()\n";
+							linea=opmayoi.getLine();
+							columna=opmayoi.getColumn();
+						}
+						if(opmenoi!=null)
+						{
+							op="menor_o_igual()\n";
+							linea=opmenoi.getLine();
+							columna=opmenoi.getColumn();
+						}
+					
+										
+							
 						cod=codh.clone();
 						
-						System.out.println("tipo: "+codh.getTipo());
-						System.out.println("tipo: "+cod1.getTipo());
-						System.out.println("oper: "+oper);
+					//	System.out.println("tipo: "+codh.getTipo());
+					//	System.out.println("tipo: "+cod1.getTipo());
+					//	System.out.println("oper: "+oper);
 						
 						
 						
@@ -266,13 +297,23 @@ racccomp[TablaSimbolos TBh, Traductor codh] returns [Traductor cod=null;]{String
 						cod.setCod(cod.getCod()+cod1.getCod()+op);
 						;
 					}
+					
+					
+					
+					
+					
+					
+					
+					
 		  			| {cod=codh;}
-					;
+			
+        			;
 			
 accadit[TablaSimbolos TBh]returns [Traductor cod=null;]{Traductor cod1;}:
 					cod1=accmult[TBh]
 					cod=raccadit[TBh,cod1]
-					;
+				
+        			;
 raccadit[TablaSimbolos TBh, Traductor codh]returns [Traductor cod=null]{Traductor cod1,cod2;String op="", oper="+";int linea=0,columna=0;}:
 					(opma:OP_MAS|opme:OP_MENOS|opor:OP_OR)
 					cod1=accmult[TBh]
@@ -298,16 +339,28 @@ raccadit[TablaSimbolos TBh, Traductor codh]returns [Traductor cod=null]{Traducto
 						}
 						cod2=codh.clone();	
 						cod2.setTipo(TBh.tipoResultante(codh.getTipo(),cod1.getTipo(),2,oper));
-						if(cod2.getTipo()=="error")cod2.setErr(cod2.getErr()+"ERROR L:"+linea+", C:"+columna+"--Tipo incompatible para la operación binaria.\n");
+						if(cod2.getTipo()=="error")cod2.setErr(cod2.getErr()+cod1.getErr()+"ERROR L:"+linea+", C:"+columna+"--Tipo incompatible para la operación binaria.\n");
 						cod2.setCod(cod2.getCod()+cod1.getCod()+op);
 					}
 					cod=raccadit[TBh,cod2]
+					
+				
+					
+					
 					|{cod=codh;}
-					;
+				
+				
+			
+				
+        			;
 
 accmult[TablaSimbolos TBh]returns [Traductor cod=null]{Traductor cod1;}:
 					cod1=accun[TBh]
-					cod=raccmult[TBh,cod1];
+					cod=raccmult[TBh,cod1]
+					
+					
+			
+					;
 raccmult[TablaSimbolos TBh,Traductor codh]returns [Traductor cod=null;] {Traductor cod1,cod2=new Traductor();String op,oper="";int linea=0,columna=0;}:
 					(opmu:OP_MUL| opdiv:OP_DIV|opan:OP_AND|opmo:OP_MOD)
 					cod1=accun[TBh]
@@ -317,16 +370,15 @@ raccmult[TablaSimbolos TBh,Traductor codh]returns [Traductor cod=null;] {Traduct
 									{
 										linea=opmu.getLine();
 										columna=opmu.getColumn();
-										if (opmu.getText()=="*")
-										{
-											oper="*";
-											op="multiplicacion()\n";
-										}
-										else
-										{
-											op="division()\n";
-											oper="/";
-										}
+										oper="*";
+										op="multiplicacion()\n";
+									}
+									if (opdiv!=null)
+									{
+										linea=opdiv.getLine();
+										columna=opdiv.getColumn();
+										op="division()\n";
+										oper="/";
 									}
 									if (opan!=null)
 									{
@@ -344,15 +396,20 @@ raccmult[TablaSimbolos TBh,Traductor codh]returns [Traductor cod=null;] {Traduct
 									}
 									cod2=codh.clone();
 									cod2.setTipo(TBh.tipoResultante(codh.getTipo(),cod1.getTipo(),2,oper));
-									if(cod.getTipo()=="error")cod.setErr(cod.getErr()+"ERROR L:"+linea+", C:"+columna+"--Tipo incompatible para la operación binaria.\n");
+									if(cod2.getTipo()=="error")
+										cod2.setErr(cod2.getErr()+cod1.getErr()+"ERROR L:"+linea+", C:"+columna+"--Tipo incompatible para la operación binaria.\n");
 									cod2.setCod(codh.getCod()+cod1.getCod()+op);
+									
+						
 								}
 					cod=raccmult[TBh,cod2]
 					|{cod=codh;}
+				
 					;
 
 accun[TablaSimbolos TBh] returns [Traductor cod=null;]{String op,oper="";Traductor cod1,cod2;int linea=0,columna=0;}:
 					cod=factor[TBh]
+					
 					| (opme:OP_MENOS|opno:OP_NOT)
 					cod1=factor[TBh]
 			 		{
@@ -387,6 +444,7 @@ accun[TablaSimbolos TBh] returns [Traductor cod=null;]{String op,oper="";Traduct
 						cod.setCod(cod2.getCod() + "convierte_"+cod1.getCod()+"()\n");
 						cod.setTipo(cod1.getTipo());
 					}
+			
 					;
 			
 factor[TablaSimbolos TBh]returns [Traductor cod=null;]{Linea linea;}:
@@ -394,18 +452,22 @@ factor[TablaSimbolos TBh]returns [Traductor cod=null;]{Linea linea;}:
 					|iden:ID
 					{	
 						cod=new Traductor();
-						linea=TBh.getLinea(iden.getText().toLowerCase());
-						cod.setCod("apilaDir("+linea.getDirMemoria()+")\n");
 						if(!TBh.isID(iden.getText()))
 						{
 							cod.setErr(cod.getErr()+"ERROR L:"+iden.getLine()+", C:"+iden.getColumn()+"--Identificador desconocido.\n");
 							cod.setTipo("error");
 						}
 						else
+						{
+							linea=TBh.getLinea(iden.getText().toLowerCase());
+							cod.setCod("apilaDir("+linea.getDirMemoria()+")\n");
 							cod.setTipo(TBh.getTipo(iden.getText()));
+						}
 
 					}
 					|DELIM_PAREN_A cod=acc[TBh] DELIM_PAREN_C
+					
+        		
 					;
 
 num returns[Traductor cod=null;]: r:REAL
@@ -414,13 +476,17 @@ num returns[Traductor cod=null;]: r:REAL
 						cod.setCod("apila("+r.getText()+")\n");
 						cod.setTipo("real");
 
-					}  
-					| e:ENTERO
+					}
+					
+        			| e:ENTERO
 					{
 						cod=new Traductor();
 						cod.setCod("apila("+e.getText()+")\n");
 						cod.setTipo("entero");
 					} 
+					
+					
+			
 					;
 
 tipo returns [Traductor tipo=null]:
@@ -433,6 +499,9 @@ tipo returns [Traductor tipo=null]:
 						tipo=new Traductor();
 						tipo.setTipo("entero");
 					}TIPOENT
+					
+				
+				
 					;
 
 
@@ -455,8 +524,16 @@ protected OP_IGUAL: "==";
 protected OP_NOT : '!';
 
 protected OP_COMP : "!=";
+
+/*
 protected OP_COMP1 : '>'|'<';
 protected OP_COMP2 : ">="|"<=";
+*/
+protected OP_MENQ : '<';
+protected OP_MAYQ : '>';
+protected OP_MAYOI : ">=";
+protected OP_MENOI : "<=";
+
 
 SALTODELINEA:('\n'|'\r'| "\r\n")
 			{
@@ -464,10 +541,20 @@ SALTODELINEA:('\n'|'\r'| "\r\n")
 				newline();
 			}
 			;
-
-COMP1_2: (OP_COMP1 '=')=> OP_COMP2 {$setType(OP_COMP2);}
+/*COMP1_2: (OP_COMP1 '=')=> OP_COMP2 {$setType(OP_COMP2);}
 		|(OP_COMP1) => OP_COMP1 {$setType(OP_COMP1);}
 		;
+*/
+COMP1: (OP_MAYQ '=')=> OP_MAYOI {$setType(OP_MAYOI);}
+               |(OP_MAYQ) => OP_MAYQ {$setType(OP_MAYQ);}
+               ;
+               
+               
+COMP2: (OP_MENQ '=')=> OP_MENOI{$setType(OP_MENOI);}
+               |(OP_MENQ) => OP_MENQ {$setType(OP_MENQ);}
+               ;
+
+
 
 ID_TIPO_OPIN_OPOUT:   (OP_IN ('T'|'t') ' ')=> TIPOENT {$setType(TIPOENT);}
 				| (OP_IN ('T'|'t') ~' ') => ID {$setType(ID);} 
