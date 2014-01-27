@@ -21,7 +21,10 @@ import antlr.collections.impl.ASTArray;
 
 public class MiParser extends antlr.LLkParser       implements MiParserTokenTypes
  {
-
+String errDecs="";
+String errorSemantico="";
+String codigoGenerado="";
+String errorSintactico="";
 protected MiParser(TokenBuffer tokenBuf, int k) {
   super(tokenBuf,k);
   tokenNames = _tokenNames;
@@ -52,7 +55,7 @@ public MiParser(ParserSharedInputState state) {
 }
 
 	public final Traductor  sprog() throws RecognitionException, TokenStreamException {
-		Traductor cod=null;;
+		Traductor cod= new Traductor();;
 		
 		returnAST = null;
 		ASTPair currentAST = new ASTPair();
@@ -62,6 +65,8 @@ public MiParser(ParserSharedInputState state) {
 			cod=prog();
 			astFactory.addASTChild(currentAST, returnAST);
 			
+									errorSemantico=cod.getErr();
+									codigoGenerado=cod.getCod();
 									System.out.println(cod.getCod());
 									System.out.println(cod.getErr());
 								
@@ -80,7 +85,7 @@ public MiParser(ParserSharedInputState state) {
 	}
 	
 	public final Traductor  prog() throws RecognitionException, TokenStreamException {
-		Traductor cod=null;;
+		Traductor cod=new Traductor();;
 		
 		returnAST = null;
 		ASTPair currentAST = new ASTPair();
@@ -92,6 +97,7 @@ public MiParser(ParserSharedInputState state) {
 			astFactory.addASTChild(currentAST, returnAST);
 			cod=accs(TBS);
 			astFactory.addASTChild(currentAST, returnAST);
+			cod.setErr(errDecs+cod.getErr());
 			prog_AST = (AST)currentAST.root;
 		}
 		catch (RecognitionException ex) {
@@ -120,7 +126,18 @@ public MiParser(ParserSharedInputState state) {
 				TBS=rdecs();
 				astFactory.addASTChild(currentAST, returnAST);
 				
-										TBS.insertaDec(dec1);
+										if(!TBS.isID(dec1.getNombre()))
+											TBS.insertaDec(dec1);
+										else
+											errDecs="ERROR Lin:"+
+												dec1.getLinea()
+												+", Col: "+
+												dec1.getColumna()
+												+"--Identificador '"
+												+
+												dec1.getNombre()
+												+"' duplicado.\n"+errDecs;							
+											
 										TB=TBS;
 									
 				decs_AST = (AST)currentAST.root;
@@ -158,7 +175,7 @@ public MiParser(ParserSharedInputState state) {
 	public final Traductor  accs(
 		TablaSimbolos TBh
 	) throws RecognitionException, TokenStreamException {
-		Traductor cod=null;
+		Traductor cod=new Traductor();;
 		
 		returnAST = null;
 		ASTPair currentAST = new ASTPair();
@@ -207,6 +224,8 @@ public MiParser(ParserSharedInputState state) {
 									nombreVar = ident.getText();
 									//System.out.println(nombreVar);
 									Declaracion decla = new Declaracion (nombreTipo.getTipo(), nombreVar);
+									decla.setLinea(ident.getLine());
+									decla.setColumna(ident.getColumn());
 									deca=decla;
 								
 			dec_AST = (AST)currentAST.root;
@@ -264,7 +283,7 @@ public MiParser(ParserSharedInputState state) {
 	}
 	
 	public final Traductor  tipo() throws RecognitionException, TokenStreamException {
-		Traductor tipo=null;
+		Traductor tipo=new Traductor();;
 		
 		returnAST = null;
 		ASTPair currentAST = new ASTPair();
@@ -315,7 +334,7 @@ public MiParser(ParserSharedInputState state) {
 	public final Traductor  acc(
 		TablaSimbolos TBh
 	) throws RecognitionException, TokenStreamException {
-		Traductor cod=null;
+		Traductor cod=new Traductor();;
 		
 		returnAST = null;
 		ASTPair currentAST = new ASTPair();
@@ -366,7 +385,7 @@ public MiParser(ParserSharedInputState state) {
 	public final Traductor  racs(
 		TablaSimbolos TBh
 	) throws RecognitionException, TokenStreamException {
-		Traductor cod = null;
+		Traductor cod = new Traductor();;
 		
 		returnAST = null;
 		ASTPair currentAST = new ASTPair();
@@ -397,7 +416,7 @@ public MiParser(ParserSharedInputState state) {
 	public final Traductor  rraccs(
 		TablaSimbolos TBh
 	) throws RecognitionException, TokenStreamException {
-		Traductor cod=null;
+		Traductor cod=new Traductor();;
 		
 		returnAST = null;
 		ASTPair currentAST = new ASTPair();
@@ -442,7 +461,7 @@ public MiParser(ParserSharedInputState state) {
 	public final Traductor  in(
 		TablaSimbolos TBh
 	) throws RecognitionException, TokenStreamException {
-		Traductor cod = null;
+		Traductor cod = new Traductor();;
 		
 		returnAST = null;
 		ASTPair currentAST = new ASTPair();
@@ -488,7 +507,7 @@ public MiParser(ParserSharedInputState state) {
 	public final Traductor  out(
 		TablaSimbolos TBh
 	) throws RecognitionException, TokenStreamException {
-		Traductor cod = null;
+		Traductor cod = new Traductor();;
 		
 		returnAST = null;
 		ASTPair currentAST = new ASTPair();
@@ -519,7 +538,7 @@ public MiParser(ParserSharedInputState state) {
 	public final Traductor  exp(
 		TablaSimbolos TBh
 	) throws RecognitionException, TokenStreamException {
-		Traductor cod=null;
+		Traductor cod=new Traductor();;
 		
 		returnAST = null;
 		ASTPair currentAST = new ASTPair();
@@ -604,7 +623,7 @@ public MiParser(ParserSharedInputState state) {
 	public final Traductor  accasign(
 		TablaSimbolos TBh
 	) throws RecognitionException, TokenStreamException {
-		Traductor cod=null;
+		Traductor cod=new Traductor();;
 		
 		returnAST = null;
 		ASTPair currentAST = new ASTPair();
@@ -626,7 +645,7 @@ public MiParser(ParserSharedInputState state) {
 	public final Traductor  acccomp(
 		TablaSimbolos TBh
 	) throws RecognitionException, TokenStreamException {
-		Traductor cod=null;;
+		Traductor cod=new Traductor();;
 		
 		returnAST = null;
 		ASTPair currentAST = new ASTPair();
@@ -651,7 +670,7 @@ public MiParser(ParserSharedInputState state) {
 	public final Traductor  accadit(
 		TablaSimbolos TBh
 	) throws RecognitionException, TokenStreamException {
-		Traductor cod=null;;
+		Traductor cod=new Traductor();;
 		
 		returnAST = null;
 		ASTPair currentAST = new ASTPair();
@@ -676,7 +695,7 @@ public MiParser(ParserSharedInputState state) {
 	public final Traductor  racccomp(
 		TablaSimbolos TBh, Traductor codh
 	) throws RecognitionException, TokenStreamException {
-		Traductor cod=null;;
+		Traductor cod=new Traductor();;
 		
 		returnAST = null;
 		ASTPair currentAST = new ASTPair();
@@ -843,7 +862,7 @@ public MiParser(ParserSharedInputState state) {
 	public final Traductor  accmult(
 		TablaSimbolos TBh
 	) throws RecognitionException, TokenStreamException {
-		Traductor cod=null;
+		Traductor cod=new Traductor();;
 		
 		returnAST = null;
 		ASTPair currentAST = new ASTPair();
@@ -868,7 +887,7 @@ public MiParser(ParserSharedInputState state) {
 	public final Traductor  raccadit(
 		TablaSimbolos TBh, Traductor codh
 	) throws RecognitionException, TokenStreamException {
-		Traductor cod=null;
+		Traductor cod=new Traductor();;
 		
 		returnAST = null;
 		ASTPair currentAST = new ASTPair();
@@ -981,7 +1000,7 @@ public MiParser(ParserSharedInputState state) {
 	public final Traductor  accun(
 		TablaSimbolos TBh
 	) throws RecognitionException, TokenStreamException {
-		Traductor cod=null;;
+		Traductor cod=new Traductor();;
 		
 		returnAST = null;
 		ASTPair currentAST = new ASTPair();
@@ -1086,7 +1105,7 @@ public MiParser(ParserSharedInputState state) {
 	public final Traductor  raccmult(
 		TablaSimbolos TBh,Traductor codh
 	) throws RecognitionException, TokenStreamException {
-		Traductor cod=null;;
+		Traductor cod=new Traductor();;
 		
 		returnAST = null;
 		ASTPair currentAST = new ASTPair();
@@ -1226,7 +1245,7 @@ public MiParser(ParserSharedInputState state) {
 	public final Traductor  factor(
 		TablaSimbolos TBh
 	) throws RecognitionException, TokenStreamException {
-		Traductor cod=null;;
+		Traductor cod=new Traductor();;
 		
 		returnAST = null;
 		ASTPair currentAST = new ASTPair();
@@ -1299,7 +1318,7 @@ public MiParser(ParserSharedInputState state) {
 	}
 	
 	public final Traductor  num() throws RecognitionException, TokenStreamException {
-		Traductor cod=null;;
+		Traductor cod=new Traductor();;
 		
 		returnAST = null;
 		ASTPair currentAST = new ASTPair();

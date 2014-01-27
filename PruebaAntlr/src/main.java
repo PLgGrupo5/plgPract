@@ -1,6 +1,8 @@
+import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
+import java.io.PrintStream;
 
 import antlr.ANTLRException;
 import antlr.CommonAST;
@@ -27,6 +29,8 @@ private static FileInputStream fis = null;
 				System.out.println(token);
 				token = scan.nextToken();
 			}*/
+			ByteArrayOutputStream nuestroError = new ByteArrayOutputStream();
+			System.setErr(new PrintStream(nuestroError));
 			System.out.println("Scanning file...");
 			fis = new FileInputStream("Para revisar.txt");
 			MiLexer scan = new MiLexer(fis);
@@ -34,12 +38,20 @@ private static FileInputStream fis = null;
 			par.sprog();
 			System.out.println(scan.erroresLexicos);
 			CommonAST a = (CommonAST)par.getAST();
-			System.out.println("Resultado ASA: "+a.toStringList());
+			String errorTrat="";
+			if (nuestroError.toString().length()!=0){
+				String[] listaString = nuestroError.toString().split(" ");
+				String loc = listaString [1];
+				String simbolo = listaString [4].split("\n")[0];
+				String linea = loc.split(":")[0];
+				String columna = loc.split(":")[1];
+				errorTrat="Error sintactico en linea: "+ linea+" columna: "+ columna+" simbolo: "+ simbolo+ "\n";
+				System.out.println(errorTrat);
+			}
+			par.errorSintactico=errorTrat;
+			//System.out.println("Resultado ASA: "+a.toStringList());
 		}catch (ANTLRException ae){
 			System.err.println(ae.getMessage() + "y aqui intervenimos");
-		}catch (NullPointerException ae){
-			System.err.println(ae.getMessage());
-			System.err.println(ae.getMessage());
 		}
 		catch(FileNotFoundException fnfe){
 			System.err.println("No se encontró el fichero");

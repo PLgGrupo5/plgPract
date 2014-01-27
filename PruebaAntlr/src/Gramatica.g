@@ -28,11 +28,16 @@ COMP1_2;
 NOT_COMP;
 }
 
-{String errDecs="";}
+{String errDecs="";
+String errorSemantico="";
+String codigoGenerado="";
+String errorSintactico="";}
 
-sprog  returns [Traductor cod=null;]/*{Traductor cod;}*/:
+sprog  returns [Traductor cod= new Traductor();]/*{Traductor cod;}*/:
 					cod=prog
 					{
+						errorSemantico=cod.getErr();
+						codigoGenerado=cod.getCod();
 						System.out.println(cod.getCod());
 						System.out.println(cod.getErr());
 					}
@@ -40,7 +45,7 @@ sprog  returns [Traductor cod=null;]/*{Traductor cod;}*/:
 					
 				
 					;
-prog returns [Traductor cod=null;]{TablaSimbolos TBS;}:
+prog returns [Traductor cod=new Traductor();]{TablaSimbolos TBS;}:
 					TBS=decs
 					cod=accs[TBS]
 					{cod.setErr(errDecs+cod.getErr());}
@@ -112,7 +117,7 @@ dec returns [Declaracion deca = new Declaracion();]{Traductor nombreTipo; String
 //ACCIONES
 //====================================================
 
-accs [TablaSimbolos TBh] returns [Traductor cod=null]{Traductor cod1, cod2;}:
+accs [TablaSimbolos TBh] returns [Traductor cod=new Traductor();]{Traductor cod1, cod2;}:
 					cod1=acc[TBh]
 					cod2=racs[TBh] 
 					
@@ -130,7 +135,7 @@ accs [TablaSimbolos TBh] returns [Traductor cod=null]{Traductor cod1, cod2;}:
 					
         			;
 
-racs [TablaSimbolos TBh] returns [Traductor cod = null] {Traductor cod1; String desap;}:
+racs [TablaSimbolos TBh] returns [Traductor cod = new Traductor();] {Traductor cod1; String desap;}:
 					SEP
 					cod =rraccs[TBh]
 					{	
@@ -143,14 +148,14 @@ racs [TablaSimbolos TBh] returns [Traductor cod = null] {Traductor cod1; String 
         			;
 
 
-rraccs [TablaSimbolos TBh]returns [Traductor cod=null]:
+rraccs [TablaSimbolos TBh]returns [Traductor cod=new Traductor();]:
 					cod=accs[TBh]
 					
 					|{cod=new Traductor();}
 				
         			;
 
-acc [TablaSimbolos TBh] returns [Traductor cod=null] :
+acc [TablaSimbolos TBh] returns [Traductor cod=new Traductor();] :
 					cod=in[TBh] 
 	 				|cod=out[TBh]
      				|cod=exp[TBh]
@@ -158,7 +163,7 @@ acc [TablaSimbolos TBh] returns [Traductor cod=null] :
      				;
 
 
-in [TablaSimbolos TBh] returns [Traductor cod = null]{Linea linea;}:
+in [TablaSimbolos TBh] returns [Traductor cod = new Traductor();]{Linea linea;}:
 					OP_IN
 					id:ID
 					{
@@ -178,7 +183,7 @@ in [TablaSimbolos TBh] returns [Traductor cod = null]{Linea linea;}:
 								}
 					
         			;
-out[TablaSimbolos TBh]returns [Traductor cod = null]{Traductor cod1;}:
+out[TablaSimbolos TBh]returns [Traductor cod = new Traductor();]{Traductor cod1;}:
 					OP_OUT
 					cod=exp[TBh]
 					{
@@ -190,7 +195,7 @@ out[TablaSimbolos TBh]returns [Traductor cod = null]{Traductor cod1;}:
 
 
 
-exp[TablaSimbolos TBh] returns [Traductor cod=null]{Traductor cod1;Linea linea=null;String tipoLinea="";int direccion=0;} :
+exp[TablaSimbolos TBh] returns [Traductor cod=new Traductor();]{Traductor cod1;Linea linea=null;String tipoLinea="";int direccion=0;} :
 					ident:ID
 					OP_AS
 					cod1=accasign[TBh]
@@ -241,18 +246,18 @@ exp[TablaSimbolos TBh] returns [Traductor cod=null]{Traductor cod1;Linea linea=n
 
         			;
 
-accasign [TablaSimbolos TBh]returns [Traductor cod=null]:
+accasign [TablaSimbolos TBh]returns [Traductor cod=new Traductor();]:
 					cod=exp[TBh]
 		
         			;
 
-acccomp[TablaSimbolos TBh]returns [Traductor cod=null;]{Traductor cod1;}:
+acccomp[TablaSimbolos TBh]returns [Traductor cod=new Traductor();]{Traductor cod1;}:
 					cod1=accadit[TBh]
 					cod=racccomp[TBh,cod1]
 		
         			;
 
-racccomp[TablaSimbolos TBh, Traductor codh] returns [Traductor cod=null;]{String op,oper=">";Traductor cod1;int linea=0,columna=0;}:
+racccomp[TablaSimbolos TBh, Traductor codh] returns [Traductor cod=new Traductor();]{String op,oper=">";Traductor cod1;int linea=0,columna=0;}:
 				/*	(opc:OP_COMP|opi:OP_IGUAL|opc1:OP_COMP1|opc2:OP_COMP2)*/
 				(opc:OP_COMP|opi:OP_IGUAL|opmayq:OP_MAYQ|opmenq:OP_MENQ|opmayoi:OP_MAYOI|opmenoi:OP_MENOI)
 					
@@ -324,12 +329,12 @@ racccomp[TablaSimbolos TBh, Traductor codh] returns [Traductor cod=null;]{String
 			
         			;
 			
-accadit[TablaSimbolos TBh]returns [Traductor cod=null;]{Traductor cod1;}:
+accadit[TablaSimbolos TBh]returns [Traductor cod=new Traductor();]{Traductor cod1;}:
 					cod1=accmult[TBh]
 					cod=raccadit[TBh,cod1]
 				
         			;
-raccadit[TablaSimbolos TBh, Traductor codh]returns [Traductor cod=null]{Traductor cod1,cod2;String op="", oper="+";int linea=0,columna=0;}:
+raccadit[TablaSimbolos TBh, Traductor codh]returns [Traductor cod=new Traductor();]{Traductor cod1,cod2;String op="", oper="+";int linea=0,columna=0;}:
 					(opma:OP_MAS|opme:OP_MENOS|opor:OP_OR)
 					cod1=accmult[TBh]
 					{
@@ -369,14 +374,14 @@ raccadit[TablaSimbolos TBh, Traductor codh]returns [Traductor cod=null]{Traducto
 				
         			;
 
-accmult[TablaSimbolos TBh]returns [Traductor cod=null]{Traductor cod1;}:
+accmult[TablaSimbolos TBh]returns [Traductor cod=new Traductor();]{Traductor cod1;}:
 					cod1=accun[TBh]
 					cod=raccmult[TBh,cod1]
 					
 					
 			
 					;
-raccmult[TablaSimbolos TBh,Traductor codh]returns [Traductor cod=null;] {Traductor cod1,cod2=new Traductor();String op,oper="";int linea=0,columna=0;}:
+raccmult[TablaSimbolos TBh,Traductor codh]returns [Traductor cod=new Traductor();] {Traductor cod1,cod2=new Traductor();String op,oper="";int linea=0,columna=0;}:
 					(opmu:OP_MUL| opdiv:OP_DIV|opan:OP_AND|opmo:OP_MOD)
 					cod1=accun[TBh]
 								{
@@ -422,7 +427,7 @@ raccmult[TablaSimbolos TBh,Traductor codh]returns [Traductor cod=null;] {Traduct
 				
 					;
 
-accun[TablaSimbolos TBh] returns [Traductor cod=null;]{String op,oper="";Traductor cod1,cod2;int linea=0,columna=0;}:
+accun[TablaSimbolos TBh] returns [Traductor cod=new Traductor();]{String op,oper="";Traductor cod1,cod2;int linea=0,columna=0;}:
 					cod=factor[TBh]
 					
 					| (opme:OP_MENOS|opno:OP_NOT)
@@ -462,7 +467,7 @@ accun[TablaSimbolos TBh] returns [Traductor cod=null;]{String op,oper="";Traduct
 			
 					;
 			
-factor[TablaSimbolos TBh]returns [Traductor cod=null;]{Linea linea;}:
+factor[TablaSimbolos TBh]returns [Traductor cod=new Traductor();]{Linea linea;}:
 					cod=num
 					|iden:ID
 					{	
@@ -485,7 +490,7 @@ factor[TablaSimbolos TBh]returns [Traductor cod=null;]{Linea linea;}:
         		
 					;
 
-num returns[Traductor cod=null;]: r:REAL
+num returns[Traductor cod=new Traductor();]: r:REAL
 					{
 						cod=new Traductor();
 						cod.setCod("apila("+r.getText()+")\n");
@@ -504,7 +509,7 @@ num returns[Traductor cod=null;]: r:REAL
 			
 					;
 
-tipo returns [Traductor tipo=null]:
+tipo returns [Traductor tipo=new Traductor();]:
 					{
 						tipo=new Traductor();
 						tipo.setTipo("real");

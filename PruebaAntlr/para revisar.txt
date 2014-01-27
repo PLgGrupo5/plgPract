@@ -6,8 +6,10 @@ int euros;
 real centimos;
 
 @out de operaciones basicas con numeros
-"
-"
-?
-out  6.0;
+
+
+
+cantidadTotal= 3 * 5.5;
+
+
 $$
