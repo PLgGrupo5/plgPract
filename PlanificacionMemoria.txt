@@ -1,0 +1,15 @@
+Especificación del léxico ............................................ALVARO
+Especificación de la sintaxis ........................................JESUS
+Estructura de la construccion de la TS ...............................JESUS
+Especificación de las restricciones contextuales......................JESUS
+Especificación de la traduccion ......................................VICTOR
+Diseño del analizador léxico .........................................JESUS
+Acondicionamientos ...................................................ALVARO
+Esquema de traduccion orientado a las gramáticas de atributos ........ALVARO
+Esquema de traduccion orientado al traductor predictivo recursivo ....ALVARO
+Formato de representacion del codigo P ...............................VICTOR
+Notas sobre la implementación
+	Descripción de los archivos
+		Linea Declaración TS y Gramatica .............................JESUS
+		Archivos de la máquina P .....................................VICTORES
+		Traductor ....................................................ALVARO 
