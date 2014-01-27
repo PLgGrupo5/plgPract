@@ -3,7 +3,10 @@ public class Declaracion {
 
 	String tipo;
 	String nombre;
+	int linea=0;
+	int columna=0;
 
+	
 	public Declaracion ()
 	{
 		this.tipo = "";
@@ -19,6 +22,18 @@ public class Declaracion {
 	}
 	public void setTipo(String tipo) {
 		this.tipo = tipo;
+	}
+	public int getLinea() {
+		return this.linea;
+	}
+	public void setLinea(int linea) {
+		this.linea = linea;
+	}
+	public int getColumna() {
+		return this.columna;
+	}
+	public void setColumna(int columna) {
+		this.columna = columna;
 	}
 	public String getNombre() {
 		return nombre;

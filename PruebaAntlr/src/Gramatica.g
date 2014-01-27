@@ -28,6 +28,7 @@ COMP1_2;
 NOT_COMP;
 }
 
+{String errDecs="";}
 
 sprog  returns [Traductor cod=null;]/*{Traductor cod;}*/:
 					cod=prog
@@ -42,6 +43,7 @@ sprog  returns [Traductor cod=null;]/*{Traductor cod;}*/:
 prog returns [Traductor cod=null;]{TablaSimbolos TBS;}:
 					TBS=decs
 					cod=accs[TBS]
+					{cod.setErr(errDecs+cod.getErr());}
 					
 		
 				
@@ -57,7 +59,18 @@ decs returns [TablaSimbolos TB = new TablaSimbolos();]
 					dec1=dec
 					TBS=rdecs
 					{
-						TBS.insertaDec(dec1);
+						if(!TBS.isID(dec1.getNombre()))
+							TBS.insertaDec(dec1);
+						else
+							errDecs="ERROR Lin:"+
+								dec1.getLinea()
+								+", Col: "+
+								dec1.getColumna()
+								+"--Identificador '"
+								+
+								dec1.getNombre()
+								+"' duplicado.\n"+errDecs;							
+							
 						TB=TBS;
 					}
 					
@@ -85,6 +98,8 @@ dec returns [Declaracion deca = new Declaracion();]{Traductor nombreTipo; String
 						nombreVar = ident.getText();
 						//System.out.println(nombreVar);
 						Declaracion decla = new Declaracion (nombreTipo.getTipo(), nombreVar);
+						decla.setLinea(ident.getLine());
+						decla.setColumna(ident.getColumn());
 						deca=decla;
 					}
 				
