@@ -49,6 +49,8 @@ private static FileInputStream fis = null;
 				System.out.println(errorTrat);
 			}
 			par.errorSintactico=errorTrat;
+			
+			System.out.println(par.codigoGenerado);
 			//System.out.println("Resultado ASA: "+a.toStringList());
 		}catch (ANTLRException ae){
 			System.err.println(ae.getMessage() + "y aqui intervenimos");

@@ -1,11 +1,12 @@
 int euros;
+int euros; 
 
 in euros;
-euros = euros = in euros;
-out euros = euros = euros = in euros;
+euros = euros = (in euros);
+out euros = euros = euros = (in euros);
 3 == (euros = 3);
 
-out euros = (euros = euros = in euros);
+out euros = (euros = euros = (in euros));
 out euros = (euros = euros == (in euros));
 out (3) == (3);
 3 - 5;
@@ -79,9 +80,9 @@ euros = (cambio + a + euros) + (euros + euros);
 @ Programa de ejemplo 1
 
 @declaraciones
-real cantidadTotal; 
-int euros; 
-real centimos;
+@real cantidadTotal; 
+@int euros; 
+@real centimos;
 
 @out de operaciones basicas con numeros
 

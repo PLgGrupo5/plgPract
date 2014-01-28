@@ -1,15 +1,7 @@
 @ Programa de ejemplo 1
 
-@declaraciones
-real cantidadTotal; 
-int euros; 
-real centimos;
+int h;
 
-@out de operaciones basicas con numeros
-
-
-
-cantidadTotal= 3 * 5.5;
 
 
 $$

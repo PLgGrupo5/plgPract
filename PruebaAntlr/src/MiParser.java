@@ -67,7 +67,7 @@ public MiParser(ParserSharedInputState state) {
 			
 									errorSemantico=cod.getErr();
 									codigoGenerado=cod.getCod();
-									System.out.println(cod.getCod());
+									//System.out.println(cod.getCod());
 									System.out.println(cod.getErr());
 								
 			AST tmp1_AST = null;
@@ -400,7 +400,7 @@ public MiParser(ParserSharedInputState state) {
 			cod=rraccs(TBh);
 			astFactory.addASTChild(currentAST, returnAST);
 				
-									desap="desapila()\n";
+									desap="desapila_valor()\n";
 									cod.setCod( desap + cod.getCod());
 								
 			racs_AST = (AST)currentAST.root;
@@ -489,9 +489,9 @@ public MiParser(ParserSharedInputState state) {
 												else
 												{
 													linea = TBh.getLinea(id.getText().toLowerCase());
-													cod.setCod("lectura("+linea.getDirMemoria()+")\n");
-													cod.setCod(cod.getCod()+"desapilaDir("+linea.getDirMemoria()+")\n");
-													cod.setCod(cod.getCod()+"apilaDir("+linea.getDirMemoria()+")\n");
+													cod.setCod("lectura()\n");
+													cod.setCod(cod.getCod()+"desapila_dir("+linea.getDirMemoria()+")\n");
+													cod.setCod(cod.getCod()+"apila_dir("+linea.getDirMemoria()+")\n");
 												}	
 											
 			in_AST = (AST)currentAST.root;
@@ -523,7 +523,7 @@ public MiParser(ParserSharedInputState state) {
 			astFactory.addASTChild(currentAST, returnAST);
 			
 									//cod=cod1.clone();
-									cod.setCod(cod.getCod() + "escritura\n");
+									cod.setCod(cod.getCod() + "escritura()\n");
 								
 			out_AST = (AST)currentAST.root;
 		}
@@ -587,8 +587,8 @@ public MiParser(ParserSharedInputState state) {
 													
 												}
 												//cod.setCod(cod1.getCod()+"desapilaDir("+direccion+")\n");//antigua
-												cod.setCod(cod.getCod()+"desapilaDir("+direccion+")\n");//nueva
-												cod.setCod(cod.getCod()+"apilaDir("+direccion+")\n");
+												cod.setCod(cod.getCod()+"desapila_dir("+direccion+")\n");//nueva
+												cod.setCod(cod.getCod()+"apila_dir("+direccion+")\n");
 												
 				
 												
@@ -1280,7 +1280,7 @@ public MiParser(ParserSharedInputState state) {
 										else
 										{
 											linea=TBh.getLinea(iden.getText().toLowerCase());
-											cod.setCod("apilaDir("+linea.getDirMemoria()+")\n");
+											cod.setCod("apila_dir("+linea.getDirMemoria()+")\n");
 											cod.setTipo(TBh.getTipo(iden.getText()));
 										}
 				
@@ -1338,7 +1338,7 @@ public MiParser(ParserSharedInputState state) {
 				match(REAL);
 				
 										cod=new Traductor();
-										cod.setCod("apila("+r.getText()+")\n");
+										cod.setCod("apila_valor("+r.getText()+")\n");
 										cod.setTipo("real");
 				
 									
@@ -1353,7 +1353,7 @@ public MiParser(ParserSharedInputState state) {
 				match(ENTERO);
 				
 										cod=new Traductor();
-										cod.setCod("apila("+e.getText()+")\n");
+										cod.setCod("apila_valor("+e.getText()+")\n");
 										cod.setTipo("entero");
 									
 				num_AST = (AST)currentAST.root;

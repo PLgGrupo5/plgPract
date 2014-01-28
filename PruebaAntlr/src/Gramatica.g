@@ -38,7 +38,7 @@ sprog  returns [Traductor cod= new Traductor();]/*{Traductor cod;}*/:
 					{
 						errorSemantico=cod.getErr();
 						codigoGenerado=cod.getCod();
-						System.out.println(cod.getCod());
+						//System.out.println(cod.getCod());
 						System.out.println(cod.getErr());
 					}
 					FIN
@@ -139,7 +139,7 @@ racs [TablaSimbolos TBh] returns [Traductor cod = new Traductor();] {Traductor c
 					SEP
 					cod =rraccs[TBh]
 					{	
-						desap="desapila()\n";
+						desap="desapila_valor()\n";
 						cod.setCod( desap + cod.getCod());
 					}
 				
@@ -176,9 +176,9 @@ in [TablaSimbolos TBh] returns [Traductor cod = new Traductor();]{Linea linea;}:
 									else
 									{
 										linea = TBh.getLinea(id.getText().toLowerCase());
-										cod.setCod("lectura("+linea.getDirMemoria()+")\n");
-										cod.setCod(cod.getCod()+"desapilaDir("+linea.getDirMemoria()+")\n");
-										cod.setCod(cod.getCod()+"apilaDir("+linea.getDirMemoria()+")\n");
+										cod.setCod("lectura()\n");
+										cod.setCod(cod.getCod()+"desapila_dir("+linea.getDirMemoria()+")\n");
+										cod.setCod(cod.getCod()+"apila_dir("+linea.getDirMemoria()+")\n");
 									}	
 								}
 					
@@ -188,7 +188,7 @@ out[TablaSimbolos TBh]returns [Traductor cod = new Traductor();]{Traductor cod1;
 					cod=exp[TBh]
 					{
 						//cod=cod1.clone();
-						cod.setCod(cod.getCod() + "escritura\n");
+						cod.setCod(cod.getCod() + "escritura()\n");
 					}
 					
 					;
@@ -228,8 +228,8 @@ exp[TablaSimbolos TBh] returns [Traductor cod=new Traductor();]{Traductor cod1;L
 									
 								}
 								//cod.setCod(cod1.getCod()+"desapilaDir("+direccion+")\n");//antigua
-								cod.setCod(cod.getCod()+"desapilaDir("+direccion+")\n");//nueva
-								cod.setCod(cod.getCod()+"apilaDir("+direccion+")\n");
+								cod.setCod(cod.getCod()+"desapila_dir("+direccion+")\n");//nueva
+								cod.setCod(cod.getCod()+"apila_dir("+direccion+")\n");
 								
 
 								
@@ -480,7 +480,7 @@ factor[TablaSimbolos TBh]returns [Traductor cod=new Traductor();]{Linea linea;}:
 						else
 						{
 							linea=TBh.getLinea(iden.getText().toLowerCase());
-							cod.setCod("apilaDir("+linea.getDirMemoria()+")\n");
+							cod.setCod("apila_dir("+linea.getDirMemoria()+")\n");
 							cod.setTipo(TBh.getTipo(iden.getText()));
 						}
 
@@ -493,7 +493,7 @@ factor[TablaSimbolos TBh]returns [Traductor cod=new Traductor();]{Linea linea;}:
 num returns[Traductor cod=new Traductor();]: r:REAL
 					{
 						cod=new Traductor();
-						cod.setCod("apila("+r.getText()+")\n");
+						cod.setCod("apila_valor("+r.getText()+")\n");
 						cod.setTipo("real");
 
 					}
@@ -501,7 +501,7 @@ num returns[Traductor cod=new Traductor();]: r:REAL
         			| e:ENTERO
 					{
 						cod=new Traductor();
-						cod.setCod("apila("+e.getText()+")\n");
+						cod.setCod("apila_valor("+e.getText()+")\n");
 						cod.setTipo("entero");
 					} 
 					
