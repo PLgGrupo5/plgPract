@@ -1,5 +1,6 @@
-int euros;
-int euros; 
+real euros;
+
+
 
 in euros;
 euros = euros = (in euros);
@@ -235,7 +236,7 @@ euros = ( 2 + 5 ) + (( 3 + 2 ) * (euros));
 out (in euros);
 
 
-out (( int ) (2 + 5));
+out (( int ) (euros + centimos));
 out (( real ) (2 + 5));
 out ((2 - 5));
 out ((2 + 5) < 5);

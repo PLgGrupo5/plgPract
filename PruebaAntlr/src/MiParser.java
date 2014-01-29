@@ -67,8 +67,6 @@ public MiParser(ParserSharedInputState state) {
 			
 									errorSemantico=cod.getErr();
 									codigoGenerado=cod.getCod();
-									//System.out.println(cod.getCod());
-									System.out.println(cod.getErr());
 								
 			AST tmp1_AST = null;
 			tmp1_AST = astFactory.create(LT(1));
@@ -189,7 +187,7 @@ public MiParser(ParserSharedInputState state) {
 			astFactory.addASTChild(currentAST, returnAST);
 				
 									cod=cod1.clone();
-									cod.setCod(cod.getCod() + cod2.getCod() + "\n");
+									cod.setCod(cod.getCod() + cod2.getCod());
 									cod.setErr(cod.getErr()+cod2.getErr());
 														
 								
@@ -222,7 +220,6 @@ public MiParser(ParserSharedInputState state) {
 			match(ID);
 			
 									nombreVar = ident.getText();
-									//System.out.println(nombreVar);
 									Declaracion decla = new Declaracion (nombreTipo.getTipo(), nombreVar);
 									decla.setLinea(ident.getLine());
 									decla.setColumna(ident.getColumn());
@@ -480,20 +477,20 @@ public MiParser(ParserSharedInputState state) {
 			astFactory.addASTChild(currentAST, id_AST);
 			match(ID);
 			
-												cod=new Traductor();
-												if(!TBh.isID(id.getText()))
-												{
-													cod.setErr(cod.getErr()+"ERROR Lin: "+id.getLine()+", Col: "+id.getColumn()+"--Identificador desconocido\n");
-													cod.setTipo("error");
-												}
-												else
-												{
-													linea = TBh.getLinea(id.getText().toLowerCase());
-													cod.setCod("lectura()\n");
-													cod.setCod(cod.getCod()+"desapila_dir("+linea.getDirMemoria()+")\n");
-													cod.setCod(cod.getCod()+"apila_dir("+linea.getDirMemoria()+")\n");
-												}	
-											
+									cod=new Traductor();
+									if(!TBh.isID(id.getText()))
+									{
+										cod.setErr(cod.getErr()+"ERROR Lin: "+id.getLine()+", Col: "+id.getColumn()+"--Identificador desconocido\n");
+										cod.setTipo("error");
+									}
+									else
+									{
+										linea = TBh.getLinea(id.getText().toLowerCase());
+										cod.setCod("lectura()\n");
+										cod.setCod(cod.getCod()+"desapila_dir("+linea.getDirMemoria()+")\n");
+										cod.setCod(cod.getCod()+"apila_dir("+linea.getDirMemoria()+")\n");
+									}	
+								
 			in_AST = (AST)currentAST.root;
 		}
 		catch (RecognitionException ex) {
@@ -522,7 +519,6 @@ public MiParser(ParserSharedInputState state) {
 			cod=exp(TBh);
 			astFactory.addASTChild(currentAST, returnAST);
 			
-									//cod=cod1.clone();
 									cod.setCod(cod.getCod() + "escritura()\n");
 								
 			out_AST = (AST)currentAST.root;
@@ -571,8 +567,7 @@ public MiParser(ParserSharedInputState state) {
 											}
 											else
 											{										
-												linea=TBh.getLinea(ident.getText().toLowerCase());
-				//										
+												linea=TBh.getLinea(ident.getText().toLowerCase());									
 											}	
 												if(linea==null)
 												{
@@ -583,17 +578,11 @@ public MiParser(ParserSharedInputState state) {
 												{
 													tipoLinea=linea.getTipo();
 													direccion=linea.getDirMemoria();
-													//System.out.println("dir:  ->  "+direccion);
 													
 												}
-												//cod.setCod(cod1.getCod()+"desapilaDir("+direccion+")\n");//antigua
 												cod.setCod(cod.getCod()+"desapila_dir("+direccion+")\n");//nueva
 												cod.setCod(cod.getCod()+"apila_dir("+direccion+")\n");
-												
-				
-												
-												cod.setTipo(TBh.tipoResultante(tipoLinea,cod1.getTipo(),2,"="));
-													
+												cod.setTipo(TBh.tipoResultante(tipoLinea,cod1.getTipo(),2,"="));						
 												if(cod.getTipo()=="error")
 													cod.setErr(cod.getErr()+"ERROR L:"+ident.getLine()+", C:"+ident.getColumn()+"--Tipo incompatible para la asignación.\n");
 											
@@ -819,17 +808,8 @@ public MiParser(ParserSharedInputState state) {
 											linea=opmenoi.getLine();
 											columna=opmenoi.getColumn();
 										}
-									
-														
-											
+				
 										cod=codh.clone();
-										
-									//	System.out.println("tipo: "+codh.getTipo());
-									//	System.out.println("tipo: "+cod1.getTipo());
-									//	System.out.println("oper: "+oper);
-										
-										
-										
 										cod.setTipo(TBh.tipoResultante(codh.getTipo(),cod1.getTipo(),2,oper));
 										if(cod.getTipo()=="error")cod.setErr(cod.getErr()+"ERROR L:"+linea+", C:"+columna+"--Tipo incompatible para la expresión.\n");
 										cod.setCod(cod.getCod()+cod1.getCod()+op);
@@ -1084,7 +1064,7 @@ public MiParser(ParserSharedInputState state) {
 				astFactory.addASTChild(currentAST, returnAST);
 				
 										cod=cod2.clone();
-										cod.setCod(cod2.getCod() + "convierte_"+cod1.getCod()+"()\n");
+										cod.setCod(cod2.getCod() + "convierte_"+cod1.getTipo()+"()\n");
 										cod.setTipo(cod1.getTipo());
 									
 				accun_AST = (AST)currentAST.root;
@@ -1204,8 +1184,6 @@ public MiParser(ParserSharedInputState state) {
 													if(cod2.getTipo()=="error")
 														cod2.setErr(cod2.getErr()+cod1.getErr()+"ERROR L:"+linea+", C:"+columna+"--Tipo incompatible para la operación binaria.\n");
 													cod2.setCod(codh.getCod()+cod1.getCod()+op);
-													
-										
 												
 				cod=raccmult(TBh,cod2);
 				astFactory.addASTChild(currentAST, returnAST);
@@ -1283,7 +1261,6 @@ public MiParser(ParserSharedInputState state) {
 											cod.setCod("apila_dir("+linea.getDirMemoria()+")\n");
 											cod.setTipo(TBh.getTipo(iden.getText()));
 										}
-				
 									
 				factor_AST = (AST)currentAST.root;
 				break;
@@ -1340,7 +1317,6 @@ public MiParser(ParserSharedInputState state) {
 										cod=new Traductor();
 										cod.setCod("apila_valor("+r.getText()+")\n");
 										cod.setTipo("real");
-				
 									
 				num_AST = (AST)currentAST.root;
 				break;

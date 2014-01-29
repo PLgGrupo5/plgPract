@@ -1,7 +1,28 @@
 @ Programa de ejemplo 1
 
-int h;
+int euros;
+int centimos;
 
+
+
+out (( int ) (euros + centimos));
+euros = (( real ) (2 + 5));
+out ((2 - 5));
+out ((2 + 5) < 5);
+out ((2 * 5) > 5);
+out ((2 / 5) <= 5);
+out ((2 && 5) >= 5);
+out ((2 + 5) == 5);
+out (centimos - (2 + 5));
+out (centimos + (2 + 5));
+out (centimos * (2 * 5));
+out (centimos / (2 + 5));
+out (centimos && (2 + 5));^^^^
+out (centimos || (2 + 5));
+out (centimos % (2 + 5));
+out !(-(2 * 5));
+out -(!(2 && 5));
+out (out (( 2 + 5 ) - ( 3 + 2 ) * (euros)));
 
 
 $$

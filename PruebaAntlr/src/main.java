@@ -36,7 +36,7 @@ private static FileInputStream fis = null;
 			MiLexer scan = new MiLexer(fis);
 			MiParser par = new MiParser(scan);
 			par.sprog();
-			System.out.println(scan.erroresLexicos);
+			//System.out.println(scan.erroresLexicos);
 			CommonAST a = (CommonAST)par.getAST();
 			String errorTrat="";
 			if (nuestroError.toString().length()!=0){
@@ -46,11 +46,19 @@ private static FileInputStream fis = null;
 				String linea = loc.split(":")[0];
 				String columna = loc.split(":")[1];
 				errorTrat="Error sintactico en linea: "+ linea+" columna: "+ columna+" simbolo: "+ simbolo+ "\n";
-				System.out.println(errorTrat);
+				//System.out.println(errorTrat);
 			}
 			par.errorSintactico=errorTrat;
 			
-			System.out.println(par.codigoGenerado);
+			if (par.errorSintactico.length()!=0)
+				System.out.println(par.errorSintactico);
+			else{
+				System.out.println(scan.erroresLexicos);
+				System.out.println(par.errorSemantico);
+			    System.out.println(par.codigoGenerado);
+			}
+			
+			
 			//System.out.println("Resultado ASA: "+a.toStringList());
 		}catch (ANTLRException ae){
 			System.err.println(ae.getMessage() + "y aqui intervenimos");
